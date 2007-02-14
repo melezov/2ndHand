@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2HWinGUI", "2HWinGUI\2HWinGUI.vcproj", "{CE3A0B02-784A-4B4F-A5B1-7913FBA5B2A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08} = {3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2HRatHook", "2HRatHook\2HRatHook.vcproj", "{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IconKreator", "IconKreator\IconKreator.vcproj", "{69B523AF-A427-4F15-BD93-AE6D12E31A9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE3A0B02-784A-4B4F-A5B1-7913FBA5B2A6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CE3A0B02-784A-4B4F-A5B1-7913FBA5B2A6}.Debug|Win32.Build.0 = Debug|Win32
+		{CE3A0B02-784A-4B4F-A5B1-7913FBA5B2A6}.Release|Win32.ActiveCfg = Release|Win32
+		{CE3A0B02-784A-4B4F-A5B1-7913FBA5B2A6}.Release|Win32.Build.0 = Release|Win32
+		{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}.Debug|Win32.Build.0 = Debug|Win32
+		{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}.Release|Win32.ActiveCfg = Release|Win32
+		{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}.Release|Win32.Build.0 = Release|Win32
+		{69B523AF-A427-4F15-BD93-AE6D12E31A9B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{69B523AF-A427-4F15-BD93-AE6D12E31A9B}.Debug|Win32.Build.0 = Debug|Win32
+		{69B523AF-A427-4F15-BD93-AE6D12E31A9B}.Release|Win32.ActiveCfg = Release|Win32
+		{69B523AF-A427-4F15-BD93-AE6D12E31A9B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
