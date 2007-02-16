@@ -32,7 +32,7 @@ struct ICON_32x32x4
 
 #define FILENAME "Access"
 
-int WINAPI WinMain( HINSTANCE w_hInst, HINSTANCE w_hPrev, char *w_sCmdLn, int w_iShow )
+int WINAPI WinMainCRTStartup()
 {
     BYTE buff[ 766 ];
 	DWORD readed;

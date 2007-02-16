@@ -28,6 +28,7 @@ LRESULT	TrayMenu( HWND w_hWnd, UINT w_uMsg, WPARAM w_wParam, LPARAM w_lParam )
 	if ( ( w_uMsg == WM_CREATE ) || ( w_uMsg == WM_TRAYCREA ) )
 	{
 		TrayAction( w_hWnd, 0x10, NIM_ADD );
+		return 1;
 	}
 
 	else if ( w_uMsg == WM_TRAYMENU )

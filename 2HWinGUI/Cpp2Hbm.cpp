@@ -1,4 +1,5 @@
 #include "WinGUI.h"
+#include <Math.h>
 
 extern unsigned char Pointers[];
 
@@ -6,7 +7,7 @@ typedef struct
 {
 	BYTE i_bX, i_bY;
 	BYTE i_pX, i_pY;
-	BYTE i_bARGB[ 1 ];
+	DWORD i_bARGB[ 1 ];
 } ICON_DESC;
 
 int t_iOx, t_iOy;
@@ -22,7 +23,7 @@ char CloseNess( char t_cDelta, BYTE t_bDegrees )
 	return t_cDiff1 < t_cDiff2 ? t_cDiff1 : t_cDiff2;
 }
 
-HBITMAP BlitDC0( HWND w_hWnd, int t_iNx, int t_iNy )
+void BlitWindow0( HWND w_hWnd, int t_iNx, int t_iNy )
 {
 	const int fX = t_iNx - t_iOx;
 	const int fY = t_iNy - t_iOy;
@@ -54,7 +55,7 @@ HBITMAP BlitDC0( HWND w_hWnd, int t_iNx, int t_iNy )
     BYTE *t_vBits;
     HBITMAP t_hBM = CreateDIBSection( 0, &t_xBMI, DIB_RGB_COLORS, (void **) &t_vBits, 0, 0 );
 
-	memcpy( t_vBits, &t_iCurr->i_bARGB, t_xBMI.bmiHeader.biSizeImage );
+	RtlCopyMemory( t_vBits, &t_iCurr->i_bARGB, t_xBMI.bmiHeader.biSizeImage );
 
 	HDC t_hDC = CreateCompatibleDC( 0 );
     SelectObject( t_hDC, t_hBM );
@@ -73,6 +74,4 @@ HBITMAP BlitDC0( HWND w_hWnd, int t_iNx, int t_iNy )
 
 	t_iOx = t_iNx;
 	t_iOy = t_iNy;
-
-	return 0;
 }

@@ -41,7 +41,7 @@ extern "C"
 		RatAction( true );
 	}
 
-	int WINAPI DllMain( HINSTANCE t_hInst, DWORD r_dReason, void *r_vReserved )
+	int WINAPI _DllMainCRTStartup( HINSTANCE t_hInst, DWORD r_dReason, void *r_vReserved )
 	{
 		if ( !g_hInst ) g_hInst = t_hInst;
 

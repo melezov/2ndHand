@@ -61,6 +61,8 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
+				GenerateManifest="false"
+				IgnoreAllDefaultLibraries="true"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -115,8 +117,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="1"
+				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MY2HRATHOOK_EXPORTS"
+				ExceptionHandling="0"
 				RuntimeLibrary="2"
+				BufferSecurityCheck="false"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -134,10 +140,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
-				GenerateDebugInformation="true"
+				GenerateManifest="false"
+				IgnoreAllDefaultLibraries="true"
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				OptimizeForWindows98="1"
 				TargetMachine="1"
 			/>
 			<Tool
