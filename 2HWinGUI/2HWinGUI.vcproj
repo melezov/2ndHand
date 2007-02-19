@@ -181,18 +181,18 @@
 	</References>
 	<Files>
 		<Filter
-			Name="CursorAssembly"
+			Name="CursorFactory"
 			>
 			<File
-				RelativePath=".\CursorAssembly.cpp"
+				RelativePath=".\CursorFactory.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\CursorAssembly.h"
+				RelativePath=".\CursorFactory.h"
 				>
 			</File>
 			<File
-				RelativePath=".\CursorTools.cpp"
+				RelativePath=".\CursorFactoryTools.cpp"
 				>
 			</File>
 		</Filter>

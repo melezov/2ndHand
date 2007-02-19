@@ -38,14 +38,14 @@ int MessagePump()
     return (int) g_xMsg.wParam;
 }
 
-CA_INFO *curCursor;
+POINT old;
 
 LRESULT CALLBACK MainProc( HWND w_hWnd, UINT w_uMsg, WPARAM w_wParam, LPARAM w_lParam )
 {
 	if ( w_uMsg == WM_USER + 1 )
 	{
 		POINT w_pNew = { (long) w_wParam, (long) w_lParam };
-		AssembleRotatedCursor( w_hWnd, curCursor, w_pNew );
+		AssembleRotatedCursor( w_hWnd, old, w_pNew );
 		return 0;
 	}
 
@@ -53,7 +53,6 @@ LRESULT CALLBACK MainProc( HWND w_hWnd, UINT w_uMsg, WPARAM w_wParam, LPARAM w_l
 
 	if ( w_uMsg == WM_CREATE )
 	{
-		curCursor = CreateCursorFactory( 0x40 );
 		return 0;
 	}
 
