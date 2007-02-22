@@ -1,14 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2HWinGUI", "2HWinGUI\2HWinGUI.vcproj", "{CE3A0B02-784A-4B4F-A5B1-7913FBA5B2A6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2ndHand", "2ndHand\2ndHand.vcproj", "{940E6B1B-7E1F-4E3D-A2D5-48820072ED59}"
 	ProjectSection(ProjectDependencies) = postProject
-		{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08} = {3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}
+		{B35ED65A-25E0-4750-B182-1B47FD97CF51} = {B35ED65A-25E0-4750-B182-1B47FD97CF51}
+		{08312FB2-D25C-41B6-80E9-E221A68E5D15} = {08312FB2-D25C-41B6-80E9-E221A68E5D15}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2HRatHook", "2HRatHook\2HRatHook.vcproj", "{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RatHook", "RatHook\RatHook.vcproj", "{08312FB2-D25C-41B6-80E9-E221A68E5D15}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IconKreator", "IconKreator\IconKreator.vcproj", "{69B523AF-A427-4F15-BD93-AE6D12E31A9B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CursorFactory", "CursorFactory\CursorFactory.vcproj", "{B35ED65A-25E0-4750-B182-1B47FD97CF51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Independent 2ndHand Files", "Independent 2ndHand Files", "{9465285F-4A99-4957-AB35-D69E56A4D736}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedIncludes", "SharedIncludes", "{5540F238-5527-447B-9B93-14244CD177E6}"
+	ProjectSection(SolutionItems) = preProject
+		SharedIncludes.h = SharedIncludes.h
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NaviCon", "NaviCon\NaviCon.vcproj", "{F5004D94-3A65-48DD-A3B3-374DA8DBA228}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,20 +26,27 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CE3A0B02-784A-4B4F-A5B1-7913FBA5B2A6}.Debug|Win32.ActiveCfg = Debug|Win32
-		{CE3A0B02-784A-4B4F-A5B1-7913FBA5B2A6}.Debug|Win32.Build.0 = Debug|Win32
-		{CE3A0B02-784A-4B4F-A5B1-7913FBA5B2A6}.Release|Win32.ActiveCfg = Release|Win32
-		{CE3A0B02-784A-4B4F-A5B1-7913FBA5B2A6}.Release|Win32.Build.0 = Release|Win32
-		{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}.Debug|Win32.Build.0 = Debug|Win32
-		{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}.Release|Win32.ActiveCfg = Release|Win32
-		{3CE3837A-7E80-4C62-8B21-9FB81B8BAC08}.Release|Win32.Build.0 = Release|Win32
-		{69B523AF-A427-4F15-BD93-AE6D12E31A9B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{69B523AF-A427-4F15-BD93-AE6D12E31A9B}.Debug|Win32.Build.0 = Debug|Win32
-		{69B523AF-A427-4F15-BD93-AE6D12E31A9B}.Release|Win32.ActiveCfg = Release|Win32
-		{69B523AF-A427-4F15-BD93-AE6D12E31A9B}.Release|Win32.Build.0 = Release|Win32
+		{940E6B1B-7E1F-4E3D-A2D5-48820072ED59}.Debug|Win32.ActiveCfg = Debug|Win32
+		{940E6B1B-7E1F-4E3D-A2D5-48820072ED59}.Debug|Win32.Build.0 = Debug|Win32
+		{940E6B1B-7E1F-4E3D-A2D5-48820072ED59}.Release|Win32.ActiveCfg = Release|Win32
+		{940E6B1B-7E1F-4E3D-A2D5-48820072ED59}.Release|Win32.Build.0 = Release|Win32
+		{08312FB2-D25C-41B6-80E9-E221A68E5D15}.Debug|Win32.ActiveCfg = Debug|Win32
+		{08312FB2-D25C-41B6-80E9-E221A68E5D15}.Debug|Win32.Build.0 = Debug|Win32
+		{08312FB2-D25C-41B6-80E9-E221A68E5D15}.Release|Win32.ActiveCfg = Release|Win32
+		{08312FB2-D25C-41B6-80E9-E221A68E5D15}.Release|Win32.Build.0 = Release|Win32
+		{B35ED65A-25E0-4750-B182-1B47FD97CF51}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B35ED65A-25E0-4750-B182-1B47FD97CF51}.Debug|Win32.Build.0 = Debug|Win32
+		{B35ED65A-25E0-4750-B182-1B47FD97CF51}.Release|Win32.ActiveCfg = Release|Win32
+		{B35ED65A-25E0-4750-B182-1B47FD97CF51}.Release|Win32.Build.0 = Release|Win32
+		{F5004D94-3A65-48DD-A3B3-374DA8DBA228}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F5004D94-3A65-48DD-A3B3-374DA8DBA228}.Debug|Win32.Build.0 = Debug|Win32
+		{F5004D94-3A65-48DD-A3B3-374DA8DBA228}.Release|Win32.ActiveCfg = Release|Win32
+		{F5004D94-3A65-48DD-A3B3-374DA8DBA228}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5540F238-5527-447B-9B93-14244CD177E6} = {9465285F-4A99-4957-AB35-D69E56A4D736}
 	EndGlobalSection
 EndGlobal
