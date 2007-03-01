@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8,00"
 	Name="RatHook"
-	ProjectGUID="{08312FB2-D25C-41B6-80E9-E221A68E5D15}"
+	ProjectGUID="{92EE5F2E-8E61-4D27-89F2-DD1E654C98C1}"
 	RootNamespace="RatHook"
 	Keyword="Win32Proj"
 	>
@@ -123,6 +123,7 @@
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
+				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				WarnAsError="false"

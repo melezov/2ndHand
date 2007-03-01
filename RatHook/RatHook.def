@@ -1,4 +1,4 @@
 LIBRARY	"RatHook"
 
-EXPORTS RatInit		@1 NONAME
-		RatAction	@2 NONAME
+EXPORTS RatAction @1 NONAME
+

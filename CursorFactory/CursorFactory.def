@@ -1,5 +1,0 @@
-LIBRARY	"CursorFactory"
-
-EXPORTS LoadCF_WS		@1 NONAME
-		KillCF_WS		@2 NONAME
-		DeriveCF_WS		@3 NONAME

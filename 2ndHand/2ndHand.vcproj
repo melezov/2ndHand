@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8,00"
 	Name="2ndHand"
-	ProjectGUID="{940E6B1B-7E1F-4E3D-A2D5-48820072ED59}"
+	ProjectGUID="{4989094F-792A-4471-9FF9-80E00F156425}"
 	RootNamespace="My2ndHand"
 	Keyword="Win32Proj"
 	>
@@ -21,7 +21,6 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
-			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -47,9 +46,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="false"
+				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 				CompileAs="1"
 			/>
@@ -64,12 +64,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="msimg32.lib msvcrtd.lib"
+				AdditionalDependencies="Msimg32.lib"
 				LinkIncremental="2"
-				GenerateManifest="true"
-				IgnoreAllDefaultLibraries="true"
 				GenerateDebugInformation="true"
 				SubSystem="2"
+				OptimizeForWindows98="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -122,13 +121,16 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="1"
+				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
+				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -143,13 +145,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="msimg32.lib msvcrt.lib"
+				AdditionalDependencies="Msimg32.lib"
 				LinkIncremental="1"
-				IgnoreAllDefaultLibraries="true"
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				OptimizeForWindows98="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -182,25 +184,69 @@
 	</References>
 	<Files>
 		<Filter
-			Name="MainGUI"
+			Name="EntryPoint"
 			>
 			<File
-				RelativePath=".\MainGUI.c"
+				RelativePath=".\EntryPoint.c"
 				>
 			</File>
 			<File
-				RelativePath=".\MainGUI.h"
+				RelativePath=".\EntryPoint.h"
 				>
 			</File>
 			<File
-				RelativePath=".\MainGUITools.c"
+				RelativePath=".\EntryPointTools.c"
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\Resources\2ndHand.rc"
+		<Filter
+			Name="Resources"
 			>
-		</File>
+			<File
+				RelativePath="..\Resources\2ndHand.rc"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="TrayIdol"
+			>
+			<File
+				RelativePath=".\TrayIdol.c"
+				>
+			</File>
+			<File
+				RelativePath=".\TrayIdol.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="CursorShop"
+			>
+			<File
+				RelativePath=".\CursorShop.c"
+				>
+			</File>
+			<File
+				RelativePath=".\CursorShop.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CursorShopTools.c"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="HookKernel"
+			>
+			<File
+				RelativePath=".\HookKernel.c"
+				>
+			</File>
+			<File
+				RelativePath=".\HookKernel.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
