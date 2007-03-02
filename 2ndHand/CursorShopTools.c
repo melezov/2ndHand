@@ -1,6 +1,6 @@
 #include "CursorShop.h"
 
-void SaveCS_Frame( CS_FRAME *s, LPCSTR fileName )
+void SaveCS_Frame( CS_FRAME *s, CTRING fileName )
 {
 	BITMAPFILEHEADER bmfh = { 0 };
 	DWORD written;

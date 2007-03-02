@@ -147,7 +147,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Msimg32.lib"
 				LinkIncremental="1"
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -184,7 +184,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="EntryPoint"
+			Name="0-EntryPoint"
 			>
 			<File
 				RelativePath=".\EntryPoint.c"
@@ -200,7 +200,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Resources"
+			Name="9-Resources"
 			>
 			<File
 				RelativePath="..\Resources\2ndHand.rc"
@@ -208,7 +208,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="TrayIdol"
+			Name="1-TrayIdol"
 			>
 			<File
 				RelativePath=".\TrayIdol.c"
@@ -220,7 +220,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="CursorShop"
+			Name="3-CursorShop"
 			>
 			<File
 				RelativePath=".\CursorShop.c"
@@ -236,7 +236,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="HookKernel"
+			Name="2-HookKernel"
 			>
 			<File
 				RelativePath=".\HookKernel.c"
@@ -244,6 +244,30 @@
 			</File>
 			<File
 				RelativePath=".\HookKernel.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="4-ClientSpace"
+			>
+			<File
+				RelativePath=".\ClientSpace.c"
+				>
+			</File>
+			<File
+				RelativePath=".\ClientSpace.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="5-ServerSpace"
+			>
+			<File
+				RelativePath=".\ServerSpace.c"
+				>
+			</File>
+			<File
+				RelativePath=".\ServerSpace.h"
 				>
 			</File>
 		</Filter>

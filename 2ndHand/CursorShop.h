@@ -14,6 +14,9 @@
 
 	#define CS_ALPHA_MASK 0xff000000
 
+	#define WS_CURSORSHOP ( WS_POPUP | WS_VISIBLE )
+	#define WX_CURSORSHOP ( WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_PALETTEWINDOW )
+
 	typedef struct
 	{
 		BYTE	cursorId;			// cursor resource ID
@@ -77,14 +80,21 @@
 		CS_HEADER	header;
 		CS_FRAME	dump;
 		CS_FRAME	thumb;
+		HWND		body;
 		SIZE		minFrame;
-		POINT		hotSpots[ 0 ];
+		CS_FACTORY	factory;
 	}
 	CS_DUMP;
 
 	#define CS_PARAMETAR_HAX 3
 
+	CS_DUMP *MakeCS_Dump( CS_HEADER *h );
+	void KillCS_Dump( CS_DUMP **pd );
+	void MoveCS_Dump( CS_DUMP *d, LPARAM s_lParam );
+
 	void TestRect( RECT *c_rBounds, POINT *c_pHit );
-	void SaveCS_Frame( CS_FRAME *s, LPCSTR fileName );
+	void SaveCS_Frame( CS_FRAME *s, CTRING fileName );
+
+	HWND CreateClassWindow( CTRING s_sCN, CTRING s_sWN, WNDPROC s_pProc, DWORD s_dStyle, DWORD s_dStyleEx );
 
 #endif // _CURSORSHOP_H_

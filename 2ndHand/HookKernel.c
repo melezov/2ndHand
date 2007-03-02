@@ -16,7 +16,7 @@ void ChangeRatMode( HWND x_hWnd )
 	RatAction( x_hWnd );
 
 	h_hIcon = LoadIcon( ge_hInst, MAKEINTRESOURCE( x_hWnd ? IDI_POINTER : IDI_DENIED ) );
-	wsprintf( buffy, "%s - %s", ge_sWN, x_hWnd ? "Active" : "Disabled" );
+	wsprintf( buffy, TEXT( "%s - %s" ), ge_sWN, x_hWnd ? TEXT( "Active" ) : TEXT( "Disabled" ) );
 
 	TrayAction( h_hIcon, buffy, NIM_MODIFY );
 }

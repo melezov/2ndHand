@@ -3,6 +3,9 @@
 
 	#include "..\\SharedIncludes.h"
 
+	extern HWND gc_hWnd;
+
+	void CreateClient();
 	void ChangeRatMode( HWND x_hWnd );
 
 #endif // _TRAYIDOL_H_

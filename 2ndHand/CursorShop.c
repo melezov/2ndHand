@@ -1,5 +1,8 @@
 #include "CursorShop.h"
 
+CTRING gs_sCN = TEXT( "2NDHAND_CURSOR_CLASS" );
+CTRING gs_sWN = TEXT( "2ndHand Cursor" );
+
 BOOL RaiseCS_Frame( CS_FRAME *f )
 {
 	if ( !f->hBM ) return ERROR_CURSORSHOP( 1 );
@@ -76,6 +79,8 @@ void KillCS_Dump( CS_DUMP **pd )
 	{
 		KillCS_Frame( &(*pd)->dump );
 		KillCS_Frame( &(*pd)->thumb );
+
+		if ( (*pd)->body ) DestroyWindow( (*pd)->body );
 
 		VirtualFree( *pd, 0, MEM_FREE );
 		*pd = 0;
@@ -194,11 +199,6 @@ BOOL MakeCS_Stretch( CS_FACTORY *f )
 	}
 
 	return ERROR_SUCCESS;
-}
-
-long abz( long a )
-{
-	return a >= 0 ? a : -a;
 }
 
 long ftol( float z )
@@ -437,11 +437,38 @@ BOOL TransferCS_Grid( CS_FACTORY *f, CS_DUMP *d )
 
 		BitBlt( d->dump.hDC, lX, lY + dY * rotSteps, rX, rY, f->grid.hDC, sX, sY + f->maxFrame.cy * rotSteps, SRCCOPY );
 
-		d->hotSpots[ rotSteps ].x = f->dims[ rotSteps ].hotSpot.x + lX;
-		d->hotSpots[ rotSteps ].y = f->dims[ rotSteps ].hotSpot.y + lY;
+		d->factory.dims[ rotSteps ].hotSpot.x = f->dims[ rotSteps ].hotSpot.x + lX;
+		d->factory.dims[ rotSteps ].hotSpot.y = f->dims[ rotSteps ].hotSpot.y + lY;
 	}
 
 	return ERROR_SUCCESS;
+}
+
+void MoveCS_Dump( CS_DUMP *d, LPARAM s_lParam )
+{
+	BLENDFUNCTION blenda = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+	POINT pNew = { (short) LOWORD( s_lParam ), (short) HIWORD( s_lParam ) };
+
+	WORD rot = (WORD) ( ( ( ( LOWORD( s_lParam ) / 4 ) % d->header.rotSteps ) + d->header.rotSteps ) % d->header.rotSteps );
+
+	POINT t_pSrc = { 0, d->minFrame.cy * rot };
+	POINT t_pDst = { pNew.x - d->factory.dims[ rot ].hotSpot.x, pNew.y - d->factory.dims[ rot ].hotSpot.y };
+	SIZE  t_pSiz = { d->minFrame.cx, d->minFrame.cy };
+
+	UpdateLayeredWindow( d->body, 0, &t_pDst, &t_pSiz, d->dump.hDC, &t_pSrc, 0, &blenda, ULW_ALPHA );
+//	SetWindowPos( d->body, HWND_TOPMOST, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE );
+}
+
+LRESULT CALLBACK s_pProc( HWND s_hWnd, UINT s_uMsg, WPARAM s_wParam, LPARAM s_lParam )
+{
+	if ( s_uMsg == WM_CLOSE ) return 0;
+
+	return DefWindowProc( s_hWnd, s_uMsg, s_wParam, s_lParam );
+}
+
+HWND WakeCS_Dump( CS_DUMP *d )
+{
+	return d->body = CreateClassWindow( gs_sCN, gs_sWN, s_pProc, WS_CURSORSHOP, WX_CURSORSHOP );
 }
 
 CS_DUMP *MakeCS_Dump( CS_HEADER *h )
@@ -504,6 +531,13 @@ CS_DUMP *MakeCS_Dump( CS_HEADER *h )
 
 	TransferCS_Grid( f, d );
 	KillCS_Factory( &f );
+
+	if ( !WakeCS_Dump( d ) )
+	{
+		KillCS_Dump( &d );
+	}
+
+	SaveCS_Frame( &d->dump, "c:\\Slike.bmp" );
 
 	return d;
 }

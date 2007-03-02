@@ -43,15 +43,25 @@ void TrayParse( WPARAM t_wParam, LPARAM t_lParam )
 		POINT t_cPos;
 
 		HMENU t_hTM = CreatePopupMenu();
+
+		AppendMenu( t_hTM, gc_hWnd ? MF_CHECKED : MF_STRING, WM_CREATE, TEXT( "Cursor Preview" ) );
+
+		AppendMenu( t_hTM, MF_SEPARATOR, 0, 0 );
 		AppendMenu( t_hTM, MF_STRING, WM_DESTROY, TEXT( "Exit 2nd Hand" ) );
-		SetForegroundWindow( ge_hWnd );
 
 		GetCursorPos( &t_cPos );
 		t_iTM = TrackPopupMenuEx( t_hTM, TPM_RETURNCMD | TPM_RIGHTALIGN | TPM_RIGHTBUTTON | TPM_BOTTOMALIGN | TPM_NONOTIFY | TPM_VERTICAL, t_cPos.x, t_cPos.y, ge_hWnd, 0 );
 
-		PostMessage( ge_hWnd, WM_NULL, 0, 0 );
 		DestroyMenu( t_hTM );
 
-		if ( t_iTM == WM_DESTROY ) PostMessage( ge_hWnd, WM_CLOSE, 0, 0 );
+		if ( t_iTM == WM_CREATE )
+		{
+			CreateClient();
+		}
+
+		else if ( t_iTM == WM_DESTROY )
+		{
+			PostMessage( ge_hWnd, WM_CLOSE, 0, 0 );
+		}
 	}
 }
