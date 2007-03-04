@@ -22,6 +22,12 @@ BOOL TrayAction( HICON t_hIcon, CTRING t_sTip, BYTE t_bAction )
 
 	if ( !Shell_NotifyIcon( t_bAction, &t_xNID ) ) return ERROR_TRAYIDOL( t_bAction );
 
+	switch ( t_bAction )
+	{
+		case NIM_ADD    : OutputText( OT_TRAYIDOL, TEXT( "Created!" ) ); break;
+		case NIM_MODIFY : OutputText( OT_TRAYIDOL, TEXT( "Modified ..." ) ); break;
+		case NIM_DELETE : OutputText( OT_TRAYIDOL, TEXT( "Destroyed!" ) );
+	}
 	return 0;
 }
 
@@ -44,8 +50,13 @@ void TrayParse( WPARAM t_wParam, LPARAM t_lParam )
 
 		HMENU t_hTM = CreatePopupMenu();
 
-		AppendMenu( t_hTM, gc_hWnd ? MF_CHECKED : MF_STRING, WM_CREATE, TEXT( "Cursor Preview" ) );
+		BOOL eShow = IsWindowVisible( ge_hWnd );
+		BOOL hShow = IsWindowVisible( gh_hWnd );
 
+		AppendMenu( t_hTM, gc_hWnd ? MF_CHECKED : MF_STRING, WM_CREATE, TEXT( gs_sWN ) );
+		AppendMenu( t_hTM, MF_SEPARATOR, 0, 0 );
+		AppendMenu( t_hTM, eShow ? MF_CHECKED : MF_STRING, WM_SYSCOMMAND, TEXT( ge_sWN ) );
+		AppendMenu( t_hTM, hShow ? MF_CHECKED : MF_STRING, WM_SHOWWINDOW, TEXT( gh_sWN ) );
 		AppendMenu( t_hTM, MF_SEPARATOR, 0, 0 );
 		AppendMenu( t_hTM, MF_STRING, WM_DESTROY, TEXT( "Exit 2nd Hand" ) );
 
@@ -57,6 +68,16 @@ void TrayParse( WPARAM t_wParam, LPARAM t_lParam )
 		if ( t_iTM == WM_CREATE )
 		{
 			CreateClient();
+		}
+
+		if ( t_iTM == WM_SHOWWINDOW )
+		{
+			ShowWindow( gh_hWnd, hShow ? SW_HIDE : SW_SHOWNORMAL );
+		}
+
+		else if ( t_iTM == WM_SYSCOMMAND )
+		{
+			ShowWindow( ge_hWnd, eShow ? SW_HIDE : SW_SHOWNORMAL );
 		}
 
 		else if ( t_iTM == WM_DESTROY )

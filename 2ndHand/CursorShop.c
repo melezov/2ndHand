@@ -537,7 +537,7 @@ CS_DUMP *MakeCS_Dump( CS_HEADER *h )
 		KillCS_Dump( &d );
 	}
 
-	SaveCS_Frame( &d->dump, "c:\\Slike.bmp" );
+//	SaveCS_Frame( &d->dump, "c:\\Slike.bmp" );
 
 	return d;
 }
