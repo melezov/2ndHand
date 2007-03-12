@@ -1,4 +1,4 @@
-#include "RatHook.h"
+#include "..\\2ndHand\\SharedCode.h"
 
 HINSTANCE gr_hInst = 0;
 HHOOK gr_hRat = 0;

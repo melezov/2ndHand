@@ -1,9 +1,11 @@
 #ifndef _TRAYIDOL_H_
 #define _TRAYIDOL_H_
 
-	#include "..\\SharedIncludes.h"
+	#include "SharedCode.h"
 
-	void CreateClient();
 	void ChangeRatMode( HWND x_hWnd );
+
+	BOOL CreateClient();
+//	void BuyNewCursor();
 
 #endif // _TRAYIDOL_H_

@@ -49,7 +49,7 @@
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 				CompileAs="1"
 			/>
@@ -64,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="RichEd20.lib"
+				AdditionalDependencies="Msimg32.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -130,7 +130,7 @@
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -145,7 +145,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="RichEd20.lib"
+				AdditionalDependencies="Msimg32.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="false"
 				SubSystem="2"
@@ -184,18 +184,38 @@
 	</References>
 	<Files>
 		<Filter
-			Name="0-EntryPoint"
+			Name="1-MainGUI"
 			>
 			<File
-				RelativePath=".\EntryPoint.c"
+				RelativePath=".\MainGUI.c"
 				>
 			</File>
 			<File
-				RelativePath=".\EntryPoint.h"
+				RelativePath=".\MainGUI.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="2-TrayIdol"
+			>
+			<File
+				RelativePath=".\TrayIdol.c"
 				>
 			</File>
 			<File
-				RelativePath=".\EntryPointTools.c"
+				RelativePath=".\TrayIdol.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="0-SharedCode"
+			>
+			<File
+				RelativePath=".\SharedCode.c"
+				>
+			</File>
+			<File
+				RelativePath=".\SharedCode.h"
 				>
 			</File>
 		</Filter>
@@ -204,18 +224,6 @@
 			>
 			<File
 				RelativePath="..\Resources\2ndHand.rc"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="1-TrayIdol"
-			>
-			<File
-				RelativePath=".\TrayIdol.c"
-				>
-			</File>
-			<File
-				RelativePath=".\TrayIdol.h"
 				>
 			</File>
 		</Filter>
@@ -236,38 +244,14 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="2-HookKernel"
+			Name="4-CursorPreview"
 			>
 			<File
-				RelativePath=".\HookKernel.c"
+				RelativePath=".\CursorPreview.c"
 				>
 			</File>
 			<File
-				RelativePath=".\HookKernel.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="4-ClientSpace"
-			>
-			<File
-				RelativePath=".\ClientSpace.c"
-				>
-			</File>
-			<File
-				RelativePath=".\ClientSpace.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="5-ServerSpace"
-			>
-			<File
-				RelativePath=".\ServerSpace.c"
-				>
-			</File>
-			<File
-				RelativePath=".\ServerSpace.h"
+				RelativePath=".\CursorPreview.h"
 				>
 			</File>
 		</Filter>

@@ -6,11 +6,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2ndHand", "2ndHand\2ndHand.
 		{92EE5F2E-8E61-4D27-89F2-DD1E654C98C1} = {92EE5F2E-8E61-4D27-89F2-DD1E654C98C1}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedIncludes", "SharedIncludes", "{05D31820-F617-4A12-B5BA-AEBC751CB2C8}"
-	ProjectSection(SolutionItems) = preProject
-		SharedIncludes.h = SharedIncludes.h
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RatHook", "RatHook\RatHook.vcproj", "{92EE5F2E-8E61-4D27-89F2-DD1E654C98C1}"
 EndProject
 Global
