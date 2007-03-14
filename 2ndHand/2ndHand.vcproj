@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8,00"
 	Name="2ndHand"
-	ProjectGUID="{4989094F-792A-4471-9FF9-80E00F156425}"
+	ProjectGUID="{87EA0F9B-732B-460C-A521-424BA0CEF682}"
 	RootNamespace="My2ndHand"
 	Keyword="Win32Proj"
 	>
@@ -64,11 +64,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Msimg32.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				OptimizeForWindows98="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -121,15 +119,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
-				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
-				WarningLevel="3"
+				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 				CompileAs="1"
@@ -145,8 +141,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Msimg32.lib"
 				LinkIncremental="1"
+				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -187,23 +183,19 @@
 			Name="1-MainGUI"
 			>
 			<File
-				RelativePath=".\MainGUI.c"
+				RelativePath="..\Source\MainGUI.c"
 				>
 			</File>
 			<File
-				RelativePath=".\MainGUI.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="2-TrayIdol"
-			>
-			<File
-				RelativePath=".\TrayIdol.c"
+				RelativePath="..\Source\MainGUI.h"
 				>
 			</File>
 			<File
-				RelativePath=".\TrayIdol.h"
+				RelativePath="..\Source\TestCenter.c"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\TrayIdol.c"
 				>
 			</File>
 		</Filter>
@@ -211,19 +203,11 @@
 			Name="0-SharedCode"
 			>
 			<File
-				RelativePath=".\SharedCode.c"
+				RelativePath="..\Source\SharedCode.c"
 				>
 			</File>
 			<File
-				RelativePath=".\SharedCode.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="9-Resources"
-			>
-			<File
-				RelativePath="..\Resources\2ndHand.rc"
+				RelativePath="..\Source\SharedCode.h"
 				>
 			</File>
 		</Filter>
@@ -231,27 +215,35 @@
 			Name="3-CursorShop"
 			>
 			<File
-				RelativePath=".\CursorShop.c"
+				RelativePath="..\Source\CursorFactory.c"
 				>
 			</File>
 			<File
-				RelativePath=".\CursorShop.h"
+				RelativePath="..\Source\CursorShop.c"
 				>
 			</File>
 			<File
-				RelativePath=".\CursorShopTools.c"
+				RelativePath="..\Source\CursorShop.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\FrameServer.c"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\OrigSpoof.c"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\PlasmaSpring.c"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="4-CursorPreview"
+			Name="9-Resource"
 			>
 			<File
-				RelativePath=".\CursorPreview.c"
-				>
-			</File>
-			<File
-				RelativePath=".\CursorPreview.h"
+				RelativePath="..\Resources\2ndHand.rc"
 				>
 			</File>
 		</Filter>

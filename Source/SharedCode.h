@@ -4,17 +4,19 @@
 	#define _WIN32_WINNT 0x0600
 	#include <windows.h>
 
-//	----------------------------------------------------------------------------------------------------------------------------
-
 	#define DLLPROC __declspec( dllimport )
+
+//	----------------------------------------------------------------------------------------------------------------------------
 
 	#define STRING TCHAR *
 	#define CTRING const STRING
 
-	#define ERROR_MAINGUI( x )			( 0x100 + x )
-	#define ERROR_TRAYIDOL( x )			( 0x200 + x )
-	#define ERROR_CURSORSHOP( x )		( 0x300 + x )
-	#define ERROR_CURSORPREVIEW( x )	( 0x400 + x )
+	BOOL ERROR_MESSAGE( CTRING eText, BOOL eID );
+
+	#define	ERROR_MAINGUI( iD )		ERROR_MESSAGE( "MainGUI", 0x100 + iD )
+	#define	ERROR_CURSORSHOP( iD )	ERROR_MESSAGE( "CursorShop", 0x200 + iD )
+
+//	#define ERROR_CURSORPREVIEW( x )	( 0x300 + x )
 
 //	----------------------------------------------------------------------------------------------------------------------------
 
@@ -30,15 +32,16 @@
 //	----------------------------------------------------------------------------------------------------------------------------
 
 	extern HINSTANCE gm_hInst;
-	extern CTRING gm_sCN;
-	extern CTRING gm_sWN;
 	extern HWND gm_hWnd;
 
-	extern CTRING gp_sCN;
-	extern CTRING gp_sWN;
+	extern CTRING gm_sCN;
+	extern CTRING gm_sWN;
 
-	extern CTRING gc_sCN;
-	extern CTRING gc_sWN;
+//	extern CTRING gp_sCN;
+//	extern CTRING gp_sWN;
+
+//	extern CTRING gc_sCN;
+//	extern CTRING gc_sWN;
 
 //	----------------------------------------------------------------------------------------------------------------------------
 

@@ -1,26 +1,6 @@
 #include "CursorShop.h"
 
 /*
-BOOL OpenCursorHBM( STRING s_OFN )
-{
-	OPENFILENAME x_OFN = { 0 };
-
-	x_OFN.lStructSize = sizeof( OPENFILENAME );
-	x_OFN.hwndOwner = gm_hWnd;
-    x_OFN.lpstrFilter = TEXT( "Bitmap files (*.bmp)\0*.bmp\0All Files\0*.*\0\0" );
-	x_OFN.lpstrFile = s_OFN;
-	x_OFN.nMaxFile = MAX_PATH;
-    x_OFN.lpstrInitialDir = 0; //
-	x_OFN.lpstrTitle = TEXT( "Open Cursor ..." );
-	x_OFN.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_LONGNAMES | OFN_HIDEREADONLY;
-	x_OFN.FlagsEx = OFN_EX_NOPLACESBAR;
-
-	if ( !GetOpenFileName( &x_OFN ) ) return ERROR_CURSORSHOP( 7 );
-
-	return ERROR_SUCCESS;
-}
-*/
-
 DWORD RenderThread( void *f_xParam )
 {
 	CS_FACTORY *f = (CS_FACTORY *) f_xParam;
@@ -93,3 +73,5 @@ void RenderCS_Factory( CS_FACTORY *f )
 		CloseHandle( newThread );
 	}
 }
+
+*/
