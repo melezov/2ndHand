@@ -10,12 +10,13 @@ void TestInit( HDC bDC )
 	CS_BITMAPCONTEXT *t;
 
 	BOOL iMake;
+	BLENDFUNCTION blenda = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
 
-	h.aaFactor = 3;
+	h.aaFactor = 4;
 	h.randSeed = GetTickCount();
 	h.borderWidth = 1.25f;
-	h.destSize.cx = 80;
-	h.destSize.cy = 60;
+	h.destSize.cx = 40;
+	h.destSize.cy = 30;
 	h.plasmaChaos = 1.0f;
 	h.rotSteps = 32;
 	h.shadowDist = 3.0f;
@@ -36,12 +37,27 @@ void TestInit( HDC bDC )
 	BitBlt( bDC, iMake, 0, _x( t ), _y( t ), _d( t ), 0, 0, SRCCOPY );
 	iMake += _x( t ) + 1;
 
-	t = &f->plsi.plas;
+	t = &f->plsy.plas;
 	BitBlt( bDC, iMake, 0, _x( t ), _y( t ), _d( t ), 0, 0, SRCCOPY );
 	iMake += _x( t ) + 1;
 
-	t = &f->plsi.flop;
-	BitBlt( bDC, iMake, 0, _x( t ), _y( t ), _d( t ), 0, 0, SRCCOPY );
+	t = &f->plsy.flop;
+	AlphaBlend( bDC, iMake, 0, _x( t ), _y( t ), _d( t ), 0, 0, _x( t ), _y( t ), blenda );
+	iMake += _x( t ) + 1;
+
+	t = &f->rndy.show;
+//	BitBlt( bDC, iMake, 0, _x( t ), _y( t ), _d( t ), 0, 0, SRCCOPY );
+	AlphaBlend( bDC, iMake, 0, _x( t ), _y( t ), _d( t ), 0, 0, _x( t ), _y( t ), blenda );
+	iMake += _x( t ) + 1;
+
+	t = &f->rots[ 1 ].preview.bcx;
+//	BitBlt( bDC, iMake, 0, _x( t ), _y( t ), _d( t ), 0, 0, SRCCOPY );
+	AlphaBlend( bDC, iMake, 0, _x( t ), _y( t ), _d( t ), 0, 0, _x( t ), _y( t ), blenda );
+	iMake += _x( t ) + 1;
+
+	t = &f->rots[ 0 ].preview.bcx;
+//	BitBlt( bDC, iMake, 0, _x( t ), _y( t ), _d( t ), 0, 0, SRCCOPY );
+	AlphaBlend( bDC, iMake, 0, _x( t ), _y( t ), _d( t ), 0, 0, _x( t ), _y( t ), blenda );
 	iMake += _x( t ) + 1;
 
 	KillCS_Factory( &f );

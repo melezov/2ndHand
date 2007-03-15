@@ -12,6 +12,8 @@
 	#define CS_BLACK 0x000000
 	#define CS_WHITE 0xFFFFFF
 
+	#define CS_ALPHA_MASK  0xFF000000
+
 	#define CS_SHADOW_OPAQ 0xFF000000
 	#define	CS_SHADOW_DARK 0x5F000000
 	#define	CS_SHADOW_LITE 0x3F000000
@@ -29,11 +31,12 @@
 	#define castCS_Frame( f, o ) ( ( (CS_FRAME *) f ) -> o )
 
 	#define _x( f ) castCS_Frame( f, bcx.bmi.bih.biWidth  )
-	#define _y( f ) castCS_Frame( f, bcx.bmi.bih.biHeight )
+	#define _y( f ) - castCS_Frame( f, bcx.bmi.bih.biHeight )
+
 	#define _h( f ) castCS_Frame( f, bcx.bmi.hBM )
 	#define _d( f ) castCS_Frame( f, bcx.dci.hDC )
 
-	#define _PX( f, x, y ) castCS_Frame( f, bcx.bmi.dPx )[ x + y * _x( f ) ]
+	#define _PX( f, x, y ) castCS_Frame( f, bcx.bmi.dPx )[ ( x ) + ( y ) * _x( f ) ]
 
 	typedef struct
 	{
@@ -125,24 +128,31 @@
 
 	typedef struct
 	{
+		CS_BITMAPCONTEXT	plas;		// destignation plasma fractal
+		CS_BITMAPCONTEXT	flop;		// fractal with loaded color info
+
 		DWORD				cNum;		// number of valid colors in cols array
 
 		CS_COLORINFO		cols[ CS_ORIGIN_MAX_COLORS ];
 		COLORREF			pals[ CS_PLASMA_MAX_COLORS ];
-
-		CS_BITMAPCONTEXT	plas;		// destignation plasma fractal
-		CS_BITMAPCONTEXT	flop;		// fractal with loaded color info
 	}
 	CS_PLASMAINFO;
+
+	typedef struct
+	{
+		CS_BITMAPCONTEXT	show;
+		HANDLE				utex;
+	}
+	CS_RENDERINFO;
 
 	typedef struct
 	{
 		CS_HEADER			head;		// cursor factory information
 
 		CS_ORIGININFO		orgy;		// resource & origin information
-		CS_PLASMAINFO		plsi;		// rendering plasma fractal
+		CS_PLASMAINFO		plsy;		// rendering plasma fractal
+		CS_RENDERINFO		rndy;		// the new factory source
 
-		CS_BITMAPCONTEXT	show;		// the new factory source
 		CS_SYNFRAME			rots[ 0 ];	// rendered frames
 	}
 	CS_FACTORY;
@@ -157,13 +167,23 @@
 	BOOL KillCS_Frame( CS_FRAME *f );
 	BOOL MakeCS_Synhro( CS_SYNHRO *f );
 	BOOL KillCS_Synhro( CS_SYNHRO *f );
-	BOOL MakeCS_Factory( CS_FACTORY **f, CS_HEADER *h );
-	BOOL KillCS_Factory( CS_FACTORY **f );
+
+	BOOL MakeCS_FramePosInfo( CS_FRAMEPOSINFO *f );
+	BOOL KillCS_FramePosInfo( CS_FRAMEPOSINFO *f );
+
+	void TestCS_FramePosInfo( CS_FRAMEPOSINFO *f, int t_iX, int t_iY );
+	BOOL EnumCS_FramePosInfo( CS_FRAMEPOSINFO *f, CS_BITMAPINFO *r, SIZE *cs );
+
 	BOOL MakeCS_OriginInfo( CS_ORIGININFO *f, HBITMAP h );
 	BOOL KillCS_OriginInfo( CS_ORIGININFO *f );
-	BOOL MakeCS_FramePosInfo( CS_FRAMEPOSINFO *f, CS_BITMAPINFO *r, SIZE *cs );
-	BOOL KillCS_FramePosInfo( CS_FRAMEPOSINFO *f );
 	BOOL MakeCS_PlasmaInfo( CS_PLASMAINFO *f, CS_HEADER *h, CS_BITMAPINFO *o );
 	BOOL KillCS_PlasmaInfo( CS_PLASMAINFO *f );
+	BOOL MakeCS_RenderInfo( CS_RENDERINFO *f, CS_HEADER *h, CS_BITMAPINFO *o );
+	BOOL KillCS_RenderInfo( CS_RENDERINFO *f );
+
+	BOOL MakeCS_Factory( CS_FACTORY **f, CS_HEADER *h );
+	BOOL KillCS_Factory( CS_FACTORY **f );
+
+	BOOL RenderCS_Frame( CS_FRAME *f, CS_BITMAPCONTEXT *o, CS_HEADER *h, WORD rotStep, CS_FRAME *g );
 
 #endif // _CURSORSHOP_H_

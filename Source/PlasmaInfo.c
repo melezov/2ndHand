@@ -100,20 +100,20 @@ BOOL PlasmaCS_BitmapInfo( CS_BITMAPINFO *p, int grad, int *nr )
 
 	if ( !nr )
 	{
-		kr[ 5 ] = _y( p ) - 1;
-
 		kr[ 0 ] = 0;
 		kr[ 1 ] = 0;
 		kr[ 2 ] = _x( p ) - 1;
-		kr[ 3 ] = kr[ 5 ] * ( kr[ 2 ] + 1 );
-		kr[ 4 ] = kr[ 2 ] + kr [ 3 ];
+		kr[ 3 ] = _y( p ) - 1;
 
-		for ( i = 1; i <= 4; i ++ )
+		kr[ 4 ] = 0;
+		kr[ 5 ] = kr[ 2 ];
+		kr[ 6 ] = kr[ 3 ] * ( kr[ 2 ] + 1 );
+		kr[ 7 ] = kr[ 5 ] + kr[ 6 ];
+
+		for ( i = 4; i < 8; i ++ )
 		{
 			p->dPx[ kr[ i ] ] = 1 + ( rand() % ( CS_PLASMA_MAX_COLORS - 1 ) );
 		}
-
-		kr[ 3 ] = kr[ 5 ];
 
 		cr = kr;
 		goto EndCall;
@@ -157,8 +157,8 @@ BOOL PlasmaCS_BitmapInfo( CS_BITMAPINFO *p, int grad, int *nr )
 
 		else if ( ( cr[ 2 ] - cr[ 0 ] > 1 ) || ( cr[ 3 ] - cr[ 1 ] > 1 ) )
 		{
-EndCall:	cr[ 4 ] = ( cr[ 0 ] + cr[ 2 ] ) >> 1;
-			cr[ 5 ] = ( cr[ 1 ] + cr[ 3 ] ) >> 1;
+EndCall:	cr[ 4 ] = ( cr[ 0 ] + cr[ 2 ] + 1 ) >> 1;
+			cr[ 5 ] = ( cr[ 1 ] + cr[ 3 ] + 1 ) >> 1;
 
 			PlasmaCS_BitmapInfo( p, grad >> 1, cr );
 		}
@@ -180,7 +180,7 @@ BOOL MakeCS_PlasmaFlop( CS_BITMAPINFO *f, CS_BITMAPINFO *c, CS_BITMAPINFO *p, in
 		COLORREF col = _PX( c, oX, oY );
 		if ( col == CS_BLACK ) continue;
 
-		_PX( f, x, y ) = pals[ _PX( p, x, y ) ];
+		_PX( f, x, y ) = pals[ _PX( p, x, y ) ] | CS_ALPHA_MASK;
 	}
 
 	return ERROR_SUCCESS;

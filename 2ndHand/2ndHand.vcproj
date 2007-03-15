@@ -64,6 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="Msimg32.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -141,6 +142,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="Msimg32.lib"
 				LinkIncremental="1"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="false"
@@ -231,11 +233,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Source\OrigSpoof.c"
+				RelativePath="..\Source\OriginInfo.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Source\PlasmaSpring.c"
+				RelativePath="..\Source\PlasmaInfo.c"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\RenderInfo.c"
 				>
 			</File>
 		</Filter>

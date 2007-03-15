@@ -8,7 +8,7 @@ BOOL MakeCS_BitmapInfo( CS_BITMAPINFO *f, int f_iX, int f_iY )
 	f->bih.biPlanes = 1;
 	f->bih.biBitCount = 32;
 	f->bih.biWidth = f_iX;
-	f->bih.biHeight = f_iY;
+	f->bih.biHeight = - f_iY;
 	f->bih.biSizeImage = f_iX * f_iY << 2;
 
 	f->hBM = CreateDIBSection( 0, (BITMAPINFO *) &f->bih, 0, &f->dPx, 0, 0 );
@@ -61,18 +61,45 @@ BOOL KillCS_BitmapContext( CS_BITMAPCONTEXT *f )
 	return iMake ? ERROR_CURSORSHOP( 6 ) : ERROR_SUCCESS;
 }
 
+BOOL MakeCS_FramePosInfo( CS_FRAMEPOSINFO *f )
+{
+	f->rBounds.left  = f->rBounds.top    = LONG_MAX;
+	f->rBounds.right = f->rBounds.bottom = LONG_MIN;
+
+	f->u.fCenter.x = f->u.fCenter.y = 0.5f;
+
+	return ERROR_SUCCESS;
+}
+
+void TestCS_FramePosInfo( CS_FRAMEPOSINFO *f, int t_iX, int t_iY )
+{
+	if ( f->rBounds.right  < t_iX ) f->rBounds.right  = t_iX;
+	if ( f->rBounds.bottom < t_iY ) f->rBounds.bottom = t_iY;
+	if ( f->rBounds.left   > t_iX ) f->rBounds.left   = t_iX;
+	if ( f->rBounds.top    > t_iY ) f->rBounds.top    = t_iY;
+}
+
+BOOL KillCS_FramePosInfo( CS_FRAMEPOSINFO *f )
+{
+	memset( f, 0, sizeof( CS_FRAMEPOSINFO ) );
+
+	return ERROR_SUCCESS;
+}
+
 BOOL MakeCS_Frame( CS_FRAME *f, int f_iX, int f_iY )
 {
-	memset( &f->fpi, 0, sizeof( CS_FRAMEPOSINFO ) );
-	return MakeCS_BitmapContext( &f->bcx, f_iX, f_iY );
+	BOOL iMake = MakeCS_FramePosInfo( &f->fpi ) |
+		         MakeCS_BitmapContext( &f->bcx, f_iX, f_iY );
+
+	return iMake;
 }
 
 BOOL KillCS_Frame( CS_FRAME *f )
 {
-	BOOL iKill;
-	memset( &f->fpi, 0, sizeof( CS_FRAMEPOSINFO ) );
-	if ( iKill = KillCS_BitmapContext( &f->bcx ) ) return iKill;
-	return ERROR_SUCCESS;
+	BOOL iKill = KillCS_FramePosInfo( &f->fpi ) |
+		         KillCS_BitmapContext( &f->bcx );
+
+	return iKill;
 }
 
 BOOL MakeCS_Synhro( CS_SYNHRO *f )
