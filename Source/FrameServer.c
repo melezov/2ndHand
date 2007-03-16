@@ -66,7 +66,7 @@ BOOL MakeCS_FramePosInfo( CS_FRAMEPOSINFO *f )
 	f->rBounds.left  = f->rBounds.top    = LONG_MAX;
 	f->rBounds.right = f->rBounds.bottom = LONG_MIN;
 
-	f->u.fCenter.x = f->u.fCenter.y = 0.5f;
+	f->u.iCenter.x = f->u.iCenter.y = 0;
 
 	return ERROR_SUCCESS;
 }

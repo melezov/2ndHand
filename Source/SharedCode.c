@@ -31,6 +31,18 @@ HWND CreateClassWindow( CTRING s_sCN, CTRING s_sWN, WNDPROC s_pProc, DWORD s_dSt
 
 //	----------------------------------------------------------------------------------------------------------------------------
 
+int flour( float x )
+{
+	return (int) ( x >= 0 ? x : x - 1 );
+}
+
+float abz( float x )
+{
+	return x > 0 ? x : - x;
+}
+
+//	----------------------------------------------------------------------------------------------------------------------------
+
 BOOL ERROR_MESSAGE( CTRING eText, BOOL eID )
 {
 	TCHAR buffy[ MAX_PATH ];

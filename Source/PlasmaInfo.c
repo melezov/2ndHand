@@ -15,13 +15,15 @@ BOOL PlasmaCS_ColorInfo( CS_COLORINFO *c, CS_BITMAPINFO *o, DWORD *cNum )
 		CS_COLORINFO *seek = c;
 		COLORREF col = _PX( o, x, y );
 
-		if ( col == CS_BLACK ) continue;
+		if ( !col ) continue;
 
 		for ( n = 0; ; seek ++ )
 		{
-			if ( seek->rgb == CS_BLACK )
+			if ( !seek->rgb )
 			{
 				seek->rgb = col;
+				seek->cnt = 1;
+				break;
 			}
 
 			if ( seek->rgb == col )
@@ -100,28 +102,27 @@ BOOL PlasmaCS_BitmapInfo( CS_BITMAPINFO *p, int grad, int *nr )
 
 	if ( !nr )
 	{
-		kr[ 0 ] = 0;
-		kr[ 1 ] = 0;
-		kr[ 2 ] = _x( p ) - 1;
-		kr[ 3 ] = _y( p ) - 1;
-
+		kr[ 3 ] = 0;
 		kr[ 4 ] = 0;
-		kr[ 5 ] = kr[ 2 ];
-		kr[ 6 ] = kr[ 3 ] * ( kr[ 2 ] + 1 );
-		kr[ 7 ] = kr[ 5 ] + kr[ 6 ];
+		kr[ 5 ] = _x( p ) - 1;
+		kr[ 6 ] = _y( p ) - 1;
 
-		for ( i = 4; i < 8; i ++ )
+		kr[ 0 ] = ( kr[ 2 ] = kr[ 5 ] ) + ( kr[ 1 ] = kr[ 6 ] * ( kr[ 5 ] + 1 ) );
+
+		cr = kr + ( r = 3 );
+
+		for ( e = 0; r >= 0; r -- )
 		{
-			p->dPx[ kr[ i ] ] = 1 + ( rand() % ( CS_PLASMA_MAX_COLORS - 1 ) );
+			p->dPx[ kr[ r ] ] = 1 + ( rand() % ( CS_PLASMA_MAX_COLORS - 1 ) );
 		}
 
-		cr = kr;
 		goto EndCall;
 	}
 
 	iPx = &_PX( p, nr[ 4 ], nr[ 5 ] );
 
 	r = *iPx ? 4 : 0;
+
 	e = ( nr[ 2 ] - nr[ 0 ] < 3 ) && ( nr[ 3 ] - nr[ 1 ] < 3 ) ? 4 : 8;
 
 	for ( i = r * 6; i < e * 6; i ++ ) kr[ i ] = nr[ plasmaIndexes[ i ] ];
@@ -167,26 +168,37 @@ EndCall:	cr[ 4 ] = ( cr[ 0 ] + cr[ 2 ] + 1 ) >> 1;
 	return ERROR_SUCCESS;
 }
 
-BOOL MakeCS_PlasmaFlop( CS_BITMAPINFO *f, CS_BITMAPINFO *c, CS_BITMAPINFO *p, int pX, int pY, COLORREF *pals )
+BOOL MakeCS_PlasmaFlop( CS_FRAME *f, CS_FRAME *c, CS_BITMAPINFO *p, COLORREF *pals )
 {
+	int pX = _x( f );
+	int pY = _y( f );
+
 	int x, y;
+
+	float fX = (float) ( _rr( c ) - _rl( c ) + 1 ) / pX;
+	float fY = (float) ( _rb( c ) - _rt( c ) + 1 ) / pY;
+
+	if ( ( fX <= 0 ) || ( fY <= 0 ) ) return ERROR_CURSORSHOP( 0x27 );
 
 	for ( y = pY - 1; y >= 0; y -- )
 	for ( x = pX - 1; x >= 0; x -- )
 	{
-		int oY = y * _y( c ) / pY;
-		int oX = x * _x( c ) / pX;
+		int oX = (int) ( x * fX ) + _rl( c );
+		int oY = (int) ( y * fY ) + _rt( c );
 
 		COLORREF col = _PX( c, oX, oY );
-		if ( col == CS_BLACK ) continue;
+		if ( !col ) continue;
 
 		_PX( f, x, y ) = pals[ _PX( p, x, y ) ] | CS_ALPHA_MASK;
 	}
 
+	_cx( f ) = ( _cx( c ) - _rl( c ) ) / fX;
+	_cy( f ) = ( _cy( c ) - _rt( c ) ) / fY;
+
 	return ERROR_SUCCESS;
 }
 
-BOOL MakeCS_PlasmaInfo( CS_PLASMAINFO *f, CS_HEADER *h, CS_BITMAPINFO *c )
+BOOL MakeCS_PlasmaInfo( CS_PLASMAINFO *f, CS_HEADER *h, CS_FRAME *c )
 {
 	BOOL iMake;
 	int pX, pY;
@@ -202,24 +214,24 @@ BOOL MakeCS_PlasmaInfo( CS_PLASMAINFO *f, CS_HEADER *h, CS_BITMAPINFO *c )
 	iMake = PlasmaCS_BitmapInfo( &f->plas.bmi, (int) ( h->plasmaChaos * 1000 ), 0 );
 	if ( iMake ) return ERROR_CURSORSHOP( 0x21 );
 
-	iMake = PlasmaCS_ColorInfo( f->cols, c, &f->cNum );
+	iMake = PlasmaCS_ColorInfo( f->cols, &c->bcx.bmi, &f->cNum );
 	if ( iMake ) return ERROR_CURSORSHOP( 0x24 );
 
 	iMake = PlasmaCS_ColorRef( f->pals, f->cols, f->cNum );
 	if( iMake ) return ERROR_CURSORSHOP( 0x26 );
 
-	iMake = MakeCS_BitmapContext( &f->flop, pX, pY );
-	if ( iMake ) return ERROR_CURSORSHOP( 0x27 );
+	iMake = MakeCS_Frame( &f->flop, pX, pY );
+	if ( iMake ) return ERROR_CURSORSHOP( 0x28 );
 
-	MakeCS_PlasmaFlop( &f->flop.bmi, c, &f->plas.bmi, pX, pY, f->pals );
+	iMake = MakeCS_PlasmaFlop( &f->flop, c, &f->plas.bmi, f->pals );
+	if ( iMake ) return ERROR_CURSORSHOP( 0x29 );
 
 	return ERROR_SUCCESS;
 }
 
 BOOL KillCS_PlasmaInfo( CS_PLASMAINFO *f )
 {
-	BOOL iKill = KillCS_BitmapContext( &f->plas ) |
-				 KillCS_BitmapContext( &f->flop );
+	BOOL iKill = KillCS_BitmapContext( &f->plas ) | KillCS_Frame( &f->flop );
 
 	return iKill ? ERROR_CURSORSHOP( 0x25 ) : ERROR_SUCCESS;
 }

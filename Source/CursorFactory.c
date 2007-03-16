@@ -2,8 +2,6 @@
 
 BOOL MakeCS_Factory( CS_FACTORY **pf, CS_HEADER *h )
 {
-	POINT ppp;
-
 	CS_FACTORY *f;
 	int iMake;
 
@@ -16,15 +14,11 @@ BOOL MakeCS_Factory( CS_FACTORY **pf, CS_HEADER *h )
 	iMake = MakeCS_OriginInfo( &f->orgy, resHBM );
 	if ( iMake ) return iMake;
 
-	iMake = MakeCS_PlasmaInfo( &f->plsy, h, &f->orgy.crop.bmi );
+	iMake = MakeCS_PlasmaInfo( &f->plsy, h, &f->orgy.orig );
 	if ( iMake ) return iMake;
 
-	iMake = MakeCS_RenderInfo( &f->rndy, h, &f->plsy.flop.bmi );
+	iMake = MakeCS_RenderInfo( &f->rndy, h, &f->plsy.flop );
 	if ( iMake ) return iMake;
-
-	GetCursorPos( &ppp );
-	iMake = ( ( ppp.x + ppp.y ) >> 1 ) % h->rotSteps;
-	iMake = RenderCS_Frame( &f->rots[ 0 ].preview, &f->rndy.show, h, (WORD) iMake, &f->rots[ 1 ].preview );
 
 	memcpy( &f->head, h, sizeof( CS_HEADER ) );
 
@@ -42,11 +36,6 @@ BOOL KillCS_Factory( CS_FACTORY **pf )
 	KillCS_RenderInfo( &f->rndy );
 
 	*pf = 0;
-
-	for ( i = 0; i < 2; i ++ )
-	{
-		KillCS_Frame( &f->rots[ i ].preview );
-	}
 
 	return !VirtualFree( f, 0, MEM_RELEASE ) ? ERROR_CURSORSHOP( 0x13 ) : ERROR_SUCCESS;
 }

@@ -45,6 +45,11 @@
 
 //	----------------------------------------------------------------------------------------------------------------------------
 
+	int flour( float x );
+	float abz( float x );
+
+//	----------------------------------------------------------------------------------------------------------------------------
+
 	HWND CreateClassWindow( CTRING s_sCN, CTRING s_sWN, WNDPROC s_pProc, DWORD s_dStyle, DWORD s_dStyleEx );
 
 #endif // _SHAREDINCLUDES_H_
