@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="RatHook"
-	ProjectGUID="{6F3DFC97-6742-4610-BFEB-A3C158819F4A}"
-	RootNamespace="RatHook"
+	Name="2ndHand"
+	ProjectGUID="{022D86B3-F894-4EEC-8DDC-2530C695B53D}"
+	RootNamespace="My2ndHand"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="1"
 			>
 			<Tool
@@ -40,17 +40,20 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;RATHOOK_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				StructMemberAlignment="3"
 				BufferSecurityCheck="false"
+				EnableFunctionLevelLinking="true"
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
+				CallingConvention="1"
 				CompileAs="1"
 			/>
 			<Tool
@@ -64,12 +67,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="&quot;$(TargetDir)\RatHook.lib&quot; &quot;C:\masm32\m32lib\masm32.lib&quot;"
 				LinkIncremental="2"
-				GenerateManifest="false"
-				ModuleDefinitionFile="RatHook.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
+				EntryPointSymbol="MainGUIEntryPoint"
+				BaseAddress="0x02D50000"
+				MergeSections=""
 				TargetMachine="1"
+				FixedBaseAddress="2"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -100,7 +106,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -121,15 +127,20 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;RATHOOK_EXPORTS"
+				FavorSizeOrSpeed="1"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				StringPooling="true"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
+				StructMemberAlignment="3"
 				BufferSecurityCheck="false"
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
+				WarnAsError="false"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
+				CallingConvention="1"
 				CompileAs="1"
 			/>
 			<Tool
@@ -143,15 +154,19 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="&quot;$(TargetDir)\RatHook.lib&quot; &quot;C:\masm32\m32lib\masm32.lib&quot;"
 				LinkIncremental="1"
-				GenerateManifest="false"
-				ModuleDefinitionFile="RatHook.def"
+				GenerateManifest="true"
 				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="1"
+				EntryPointSymbol="MainGUIEntryPoint"
+				BaseAddress="0x2D500000"
+				MergeSections=""
 				TargetMachine="1"
+				FixedBaseAddress="2"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -183,18 +198,100 @@
 	</References>
 	<Files>
 		<Filter
-			Name="0-RatHook"
+			Name="1-MainGUI"
 			>
 			<File
-				RelativePath="..\Source\RatHook.c"
+				RelativePath="..\Source\MainGUI.c"
 				>
 			</File>
 			<File
-				RelativePath=".\RatHook.def"
+				RelativePath="..\Source\MainGUI.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\TrayIdol.c"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="0-SharedCode"
+			>
+			<File
+				RelativePath="..\Source\SharedCode.c"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\SharedCode.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\SharedData.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="8-RatHook"
+			>
+			<File
+				RelativePath="..\Source\RatHook.asm"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="&quot;$(InputDir)$(InputName).bat&quot; &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
+						Outputs="&quot;$(TargetDir)$(InputName).lib&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="&quot;$(InputDir)$(InputName).bat&quot; &quot;$(InputPath)&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;"
+						Outputs="&quot;$(TargetDir)$(InputName).lib&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\Source\RatHook.bat"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\RatHook.def"
 				>
 			</File>
 			<File
 				RelativePath="..\Source\RatHook.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="9-Resources"
+			>
+			<File
+				RelativePath="..\Icons\2ndHand.rc"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="2-CursorShop"
+			>
+			<File
+				RelativePath="..\Source\CursorShop.c"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\CursorShop.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\FrameServer.c"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\PlasmaServer.c"
 				>
 			</File>
 		</Filter>

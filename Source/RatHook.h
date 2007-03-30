@@ -1,6 +1,20 @@
-#ifndef _RATHOOK_H_
-#define _RATHOOK_H_
+#define UNICODE 1
+STRINGS UNICODE
 
-	#include "SharedCode.h"
+#ifdef UNICODE
 
-#endif // _RATHOOK_H_
+    #define GetMessage GetMessageW
+    #define DispatchMessage DispatchMessageW
+    #define SetWindowsHookEx SetWindowsHookExW
+    #define wsprintf wsprintfW
+    #define TextOut TextOutW
+
+#else
+
+    #define GetMessage GetMessageA
+    #define DispatchMessage DispatchMessageA
+    #define SetWindowsHookEx SetWindowsHookExA
+    #define wsprintf wsprintfA
+    #define TextOut TextOutA
+
+#endif

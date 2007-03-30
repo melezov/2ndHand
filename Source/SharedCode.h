@@ -1,55 +1,50 @@
-#ifndef _SHAREDINCLUDES_H_
-#define _SHAREDINCLUDES_H_
+#ifndef _SHAREDCODE_H_
+#define _SHAREDCODE_H_
 
-	#define _WIN32_WINNT 0x0600
-	#include <windows.h>
+    #define _WIN32_WINNT 0x0600
+    #include <windows.h>
 
-	#define DLLPROC __declspec( dllimport )
+    #define STRING TCHAR *
+    #define CTRING const STRING
 
-//	----------------------------------------------------------------------------------------------------------------------------
+//  ---------------------------------------------------------------------------------------------------------------------------
 
-	#define STRING TCHAR *
-	#define CTRING const STRING
+    #define DLLPROC __declspec( dllimport )
 
-	BOOL ERROR_MESSAGE( CTRING eText, BOOL eID );
+    DLLPROC void MemZero( DWORD s_dSize, void *s_vDest );
+    DLLPROC void MemCopy( DWORD s_dSize, void *s_vDest, void *s_vSrc );
+    DLLPROC void MessagePump();
+    DLLPROC HWND RatHookAction( HWND s_hWnd );
+    DLLPROC DWORD NRandom( DWORD *s_dRNG );
+    DLLPROC DWORD *MemAlloc( DWORD s_dSize );
+    DLLPROC void MemFree( DWORD *s_vDest );
 
-	#define	ERROR_MAINGUI( iD )		ERROR_MESSAGE( "MainGUI", 0x100 + iD )
-	#define	ERROR_CURSORSHOP( iD )	ERROR_MESSAGE( "CursorShop", 0x200 + iD )
+//  ---------------------------------------------------------------------------------------------------------------------------
 
-//	#define ERROR_CURSORPREVIEW( x )	( 0x300 + x )
+    HWND CreateClassWindow( CTRING s_sCN, CTRING s_sWN, WNDPROC s_pProc, DWORD s_dStyle, DWORD s_dStyleEx );
 
-//	----------------------------------------------------------------------------------------------------------------------------
+//  ---------------------------------------------------------------------------------------------------------------------------
 
-	#define WM_TRAYIDOL ( WM_USER + 0x0 )
-	#define WM_RATHOOK  ( WM_USER + 0x1 )
+    #define WM_TRAYIDOL ( WM_USER + 0x0 )
+    #define WM_RATHOOK  ( WM_USER + 0x1 )
 
-//	----------------------------------------------------------------------------------------------------------------------------
+//  ---------------------------------------------------------------------------------------------------------------------------
 
-	#define IDI_POINTER	0x10
-	#define	IDI_PICKER	0x20
-	#define	IDI_DENIED	0x30
+    #define IDI_POINTER 0x10
+    #define IDI_PICKER  0x20
+    #define IDI_DENIED  0x30
 
-//	----------------------------------------------------------------------------------------------------------------------------
+//  ---------------------------------------------------------------------------------------------------------------------------
 
-	extern HINSTANCE gm_hInst;
-	extern HWND gm_hWnd;
+    #include "SharedData.h"
 
-	extern CTRING gm_sCN;
-	extern CTRING gm_sWN;
+//  ---------------------------------------------------------------------------------------------------------------------------
 
-//	extern CTRING gp_sCN;
-//	extern CTRING gp_sWN;
+    BOOL ERROR_MESSAGE( BOOL x );
 
-//	extern CTRING gc_sCN;
-//	extern CTRING gc_sWN;
+    #define ERROR_MAINGUI( x )    ( ERROR_MESSAGE( x + 0x100 ) )
+    #define ERROR_CURSORSHOP( x ) ( ERROR_MESSAGE( x + 0x200 ) )
 
-//	----------------------------------------------------------------------------------------------------------------------------
+//  ---------------------------------------------------------------------------------------------------------------------------
 
-	int flour( float x );
-	float abz( float x );
-
-//	----------------------------------------------------------------------------------------------------------------------------
-
-	HWND CreateClassWindow( CTRING s_sCN, CTRING s_sWN, WNDPROC s_pProc, DWORD s_dStyle, DWORD s_dStyleEx );
-
-#endif // _SHAREDINCLUDES_H_
+#endif // _SHAREDCODE_H_

@@ -1,4 +1,11 @@
 LIBRARY	"RatHook"
 
-EXPORTS RatAction @1 NONAME
+EXPORTS 
 
+@MemZero@8          @1 NONAME
+@MemCopy@12         @2 NONAME
+@MessagePump@0      @3 NONAME
+@RatHookAction@4    @4 NONAME
+@NRandom@4          @5 NONAME
+@MemAlloc@4         @6 NONAME
+@MemFree@4          @7 NONAME

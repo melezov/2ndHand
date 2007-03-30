@@ -3,14 +3,8 @@
 
 	#include "SharedCode.h"
 
-	#define _USE_MATH_DEFINES
-	#include <math.h>
-
 	#define WS_CURSORSHOP ( WS_POPUP | WS_VISIBLE )
 	#define WX_CURSORSHOP ( WS_EX_PALETTEWINDOW | WS_EX_NOACTIVATE | WS_EX_LAYERED | WS_EX_TRANSPARENT )
-
-	#define CS_ROTATION_SLUG	8
-	#define CS_STRETCH_SLUG		20
 
 	#define CS_WHITE		0x00FFFFFF
 	#define CS_ALPHA_MASK	0xFF000000
@@ -26,62 +20,48 @@
 		BITMAPINFOHEADER	bih;		// bitmap info header duh
 		HBITMAP				hBM;		// cursor HBITMAP
 		COLORREF		   *dPx;		// pointer to bitmap bits (32 bpp)
-	}
-	CS_BITMAPINFO;
 
-	#define _cf( f, o ) ( ( (CS_FRAME *) f ) -> o )
-
-	#define _x( f ) _cf( f, bcx.bmi.bih.biWidth  )
-	#define _y( f ) - _cf( f, bcx.bmi.bih.biHeight )
-
-	#define _h( f ) _cf( f, bcx.bmi.hBM )
-	#define _d( f ) _cf( f, bcx.dci.hDC )
-
-	#define _cx( f ) _cf( f, fpi.u.fCenter.x )
-	#define _cy( f ) _cf( f, fpi.u.fCenter.y )
-	#define _ix( f ) _cf( f, fpi.u.iCenter.x )
-	#define _iy( f ) _cf( f, fpi.u.iCenter.y )
-
-	#define _rl( f ) _cf( f, fpi.rBounds.left )
-	#define _rt( f ) _cf( f, fpi.rBounds.top )
-	#define _rr( f ) _cf( f, fpi.rBounds.right )
-	#define _rb( f ) _cf( f, fpi.rBounds.bottom )
-
-	#define _PX( f, x, y ) _cf( f, bcx.bmi.dPx )[ ( x ) + ( y ) * _x( f ) ]
-
-	typedef struct
-	{
 		HDC					hDC;		// hDC in which the bitmap is loaded
 		HGDIOBJ				hGO;		// old GDI object from the hDC
-	}
-	CS_DCINFO;
 
-	typedef struct
-	{
-		CS_BITMAPINFO		bmi;		// bitmap info
-		CS_DCINFO			dci;		// device context info
-	}
-	CS_BITMAPCONTEXT;
-
-	typedef struct
-	{
-		RECT				rBounds;	// minimum bounding box
-
+		RECT				rBd;	    // minimum bounding box
 		union							// frame rotation point
-		{
-			POINT			iCenter;	// used for rendered frames
-			POINTFLOAT		fCenter;	// used by cursor factory
-		} u;
-	}
-	CS_FRAMEPOSINFO;
-
-	typedef struct
-	{
-		CS_BITMAPCONTEXT	bcx;		// bitmap & context info
-		CS_FRAMEPOSINFO		fpi;		// frame positioning info
-	}
+        {
+			POINT			iC;	        // used for rendered frames
+			POINTFLOAT		fC;	        // used by cursor factory
+		} pnt;
+    }
 	CS_FRAME;
 
+    #define _x bih.biWidth
+    #define _y bih.biHeight
+
+	#define _rl rBd.left
+	#define _rt rBd.top
+	#define _rr rBd.right
+	#define _rb rBd.bottom
+
+    #define _fx pnt.fC.x
+    #define _fy pnt.fC.y
+	#define _ix pnt.iC.x
+	#define _iy pnt.iC.y
+
+	#define _PX( f, x, y ) ( f dPx )[ ( x ) + ( y ) * ( f _x ) ]
+
+	typedef struct
+	{
+		TCHAR	resId[ MAX_PATH ];		// resource Id
+		DWORD	rotSteps;				// number of frames in the factory
+		SIZE	destSize;				// preferred cursor size
+		BYTE	aaFactor;				// anti-aliasing factor x by x
+		float	borderWidth;			// border width in destignation pixels
+		float	shadowDist;				// shadow x and y distance in destignation pixels
+		float	plasmaChaos;			// plasma dispersion factor
+		DWORD	randSeed;				// random seed for color dispersion & co.
+	}
+	CS_HEADER;
+
+/*
 	typedef struct
 	{
 		HANDLE				sema;		// synchronization semafor
@@ -102,19 +82,6 @@
 		CS_FRAME			render;		// rendered frame
 	}
 	CS_SYNFRAME;
-
-	typedef struct
-	{
-		TCHAR	resId[ MAX_PATH ];		// resource Id
-		DWORD	rotSteps;				// number of frames in the factory
-		SIZE	destSize;				// preferred cursor size
-		BYTE	aaFactor;				// anti-aliasing factor x by x
-		float	borderWidth;			// border width in destignation pixels
-		float	shadowDist;				// shadow x and y distance in destignation pixels
-		float	plasmaChaos;			// plasma dispersion factor
-		DWORD	randSeed;				// random seed for color dispersion & co.
-	}
-	CS_HEADER;
 
 	typedef struct
 	{
@@ -192,5 +159,5 @@
 	BOOL KillCS_Factory( CS_FACTORY **f );
 
 	BOOL RenderCS_Frame( CS_FRAME *f, CS_FACTORY *o, float fi, float rr );
-
+*/
 #endif // _CURSORSHOP_H_

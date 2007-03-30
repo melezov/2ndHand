@@ -1,15 +1,20 @@
 #include "MainGUI.h"
-#include "CursorShop.h"
 
-void TestCenter( UINT msg, WPARAM wparam, LPARAM lparam );
+CTRING gm_sCN = TEXT( "2NDHAND_MAINGUI_CLASS" );
+CTRING gm_sWN = TEXT( "2ndHand - MainGUI" );
+
+HINSTANCE gm_hInst;
+HWND gm_hWnd;
+
+void TestCenter( int m_uMsg );
 
 LRESULT CALLBACK m_pProc( HWND m_hWnd, UINT m_uMsg, WPARAM m_wParam, LPARAM m_lParam )
 {
-	if ( !TrayParse( m_uMsg, m_wParam, m_lParam ) ) return 0;
+	if ( !TrayParse( m_uMsg, m_lParam ) ) return 0;
 
-	TestCenter( m_uMsg, m_wParam, m_lParam );
+    TestCenter( m_uMsg );
 
-	if ( m_uMsg == WM_NCCREATE )
+    if ( m_uMsg == WM_NCCREATE )
 	{
 		gm_hWnd = m_hWnd;
 		ChangeRatMode( m_hWnd );
@@ -24,23 +29,16 @@ LRESULT CALLBACK m_pProc( HWND m_hWnd, UINT m_uMsg, WPARAM m_wParam, LPARAM m_lP
 	return DefWindowProc( m_hWnd, m_uMsg, m_wParam, m_lParam );
 }
 
-int WinMainCRTStartup()
+int MainGUIEntryPoint()
 {
-	gm_hInst = GetModuleHandle( 0 );
+    gm_hInst = GetModuleHandle( 0 );
+    gm_hWnd = CreateClassWindow( gm_sCN, gm_sWN, m_pProc, WS_MAINGUI, WX_MAINGUI );
 
-	if ( !CreateClassWindow( gm_sCN, gm_sWN, m_pProc, WS_MAINGUI, WX_MAINGUI ) ) return ERROR_MAINGUI( 0 );
+    if ( gm_hWnd )
+    {
+        SetWindowPos( gm_hWnd, 0, 50, 50, 1300, 850, SWP_SHOWWINDOW );
+        MessagePump();
+    }
 
-	SetWindowPos( gm_hWnd, HWND_TOP, 100, 100, 1200, 850, SWP_SHOWWINDOW );
-
-	while( 1 )
-	{
-		MSG m_xMsg;
-	 	int m_iMsg = GetMessage( &m_xMsg, 0, 0, 0 );
-
-		if ( !( ++ m_iMsg ) ) continue;
-		if ( !( -- m_iMsg ) ) ExitProcess( (UINT) m_xMsg.wParam );
-
-		TranslateMessage( &m_xMsg );
-		DispatchMessage( &m_xMsg );
-	}
+    return ERROR_MAINGUI( 0 );
 }
