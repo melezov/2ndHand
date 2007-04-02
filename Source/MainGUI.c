@@ -31,6 +31,8 @@ LRESULT CALLBACK m_pProc( HWND m_hWnd, UINT m_uMsg, WPARAM m_wParam, LPARAM m_lP
 
 int MainGUIEntryPoint()
 {
+    SetPriorityClass( GetCurrentProcess(), HIGH_PRIORITY_CLASS );
+
     gm_hInst = GetModuleHandle( 0 );
     gm_hWnd = CreateClassWindow( gm_sCN, gm_sWN, m_pProc, WS_MAINGUI, WX_MAINGUI );
 

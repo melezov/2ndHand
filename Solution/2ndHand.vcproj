@@ -156,7 +156,8 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="&quot;$(TargetDir)\RatHook.lib&quot; &quot;C:\masm32\m32lib\masm32.lib&quot;"
 				LinkIncremental="1"
-				GenerateManifest="true"
+				GenerateManifest="false"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -279,6 +280,10 @@
 			Name="2-CursorShop"
 			>
 			<File
+				RelativePath="..\Source\CursorFactory.c"
+				>
+			</File>
+			<File
 				RelativePath="..\Source\CursorShop.c"
 				>
 			</File>
@@ -292,6 +297,10 @@
 			</File>
 			<File
 				RelativePath="..\Source\PlasmaServer.c"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\RenderInfo.c"
 				>
 			</File>
 		</Filter>

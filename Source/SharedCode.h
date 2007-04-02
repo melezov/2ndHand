@@ -17,7 +17,7 @@
     DLLPROC HWND RatHookAction( HWND s_hWnd );
     DLLPROC DWORD NRandom( DWORD *s_dRNG );
     DLLPROC DWORD *MemAlloc( DWORD s_dSize );
-    DLLPROC void MemFree( DWORD *s_vDest );
+    DLLPROC void MemFree( void *s_vDest );
 
 //  ---------------------------------------------------------------------------------------------------------------------------
 
@@ -40,10 +40,8 @@
 
 //  ---------------------------------------------------------------------------------------------------------------------------
 
-    BOOL ERROR_MESSAGE( BOOL x );
-
-    #define ERROR_MAINGUI( x )    ( ERROR_MESSAGE( x + 0x100 ) )
-    #define ERROR_CURSORSHOP( x ) ( ERROR_MESSAGE( x + 0x200 ) )
+    #define ERROR_MAINGUI( x )    ( 0xE0000100 + (BYTE) ( x ) )
+    #define ERROR_CURSORSHOP( x ) ( 0xE0000200 + (BYTE) ( x ) )
 
 //  ---------------------------------------------------------------------------------------------------------------------------
 

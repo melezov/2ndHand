@@ -16,9 +16,3 @@ HWND CreateClassWindow( CTRING s_sCN, CTRING s_sWN, WNDPROC s_pProc, DWORD s_dSt
 
     return CreateWindowEx( s_dStyleEx, s_sCN, s_sWN, s_dStyle, 0, 0, 0, 0, 0, 0, 0, 0 );
 }
-
-BOOL ERROR_MESSAGE( BOOL x )
-{
-    MessageBox( 0, 0, 0, 0 );
-    return x;
-}

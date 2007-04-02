@@ -7,6 +7,7 @@ STRINGS UNICODE
     #define DispatchMessage DispatchMessageW
     #define SetWindowsHookEx SetWindowsHookExW
     #define wsprintf wsprintfW
+    #define PostMessage PostMessageW
     #define TextOut TextOutW
 
 #else
@@ -15,6 +16,7 @@ STRINGS UNICODE
     #define DispatchMessage DispatchMessageA
     #define SetWindowsHookEx SetWindowsHookExA
     #define wsprintf wsprintfA
+    #define PostMessage PostMessageA
     #define TextOut TextOutA
 
 #endif

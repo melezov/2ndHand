@@ -168,6 +168,8 @@
         invoke    TextOut, eax, 50, 50, addr SZ_BUFF, 54h
         invoke    ReleaseDC, 0h
 
+        invoke    PostMessage, [ gx_hWnd ], 401h, 0, 0 ; WM_RATHOOK
+
         xor       eax, eax
         ret
      ;}

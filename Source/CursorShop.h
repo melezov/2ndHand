@@ -9,9 +9,9 @@
 	#define CS_WHITE		0x00FFFFFF
 	#define CS_ALPHA_MASK	0xFF000000
 
-	#define CS_SHADOW_OPAQ	0xFF000000
-	#define	CS_SHADOW_DARK	0x5F000000
-	#define	CS_SHADOW_LITE	0x3F000000
+	#define CS_SHADOW_OPAQ	0xFF0000FF
+	#define	CS_SHADOW_DARK	0x5F005F00
+	#define	CS_SHADOW_LITE	0x3F3F0000
 
 	#define CS_ASPECT_CORRECTION 1.0f
 
@@ -19,7 +19,7 @@
 	{
 		BITMAPINFOHEADER	bih;		// bitmap info header duh
 		HBITMAP				hBM;		// cursor HBITMAP
-		COLORREF		   *dPx;		// pointer to bitmap bits (32 bpp)
+		DWORD		       *dPx;		// pointer to bitmap bits (32 bpp)
 
 		HDC					hDC;		// hDC in which the bitmap is loaded
 		HGDIOBJ				hGO;		// old GDI object from the hDC
@@ -46,7 +46,7 @@
 	#define _ix pnt.iC.x
 	#define _iy pnt.iC.y
 
-	#define _PX( f, x, y ) ( f dPx )[ ( x ) + ( y ) * ( f _x ) ]
+    #define _PX( f, x, y ) ( ( ( f ) -> dPx ) [ ( x ) + ( y ) * ( ( f ) -> _x ) ] )
 
 	typedef struct
 	{
@@ -61,103 +61,23 @@
 	}
 	CS_HEADER;
 
-/*
-	typedef struct
-	{
-		HANDLE				sema;		// synchronization semafor
-		BYTE				status;		// current frame status
-	}
-	CS_SYNHRO;
-
-	#define CS_SYNHRO_ABANDONED		0xFF
-	#define CS_SYNHRO_IDLE			0x00
-	#define CS_SYNHRO_PRIORITY		0x01
-	#define CS_SYNHRO_PREVIEWING	0x02
-	#define CS_SYNHRO_RENDERING		0x03
-	#define CS_SYNHRO_FINISHED		0x04
-
-	typedef struct
-	{
-		CS_SYNHRO			syn;		// thread insurance
-		CS_FRAME			render;		// rendered frame
-	}
-	CS_SYNFRAME;
-
-	typedef struct
-	{
-		COLORREF	rgb;			// (a)rgb values
-		DWORD		cnt;			// number of occurances
-	}
-	CS_COLORINFO;
-
-	typedef struct
-	{
-		CS_BITMAPCONTEXT	rsrc;
-		CS_FRAME			orig;
-	}
-	CS_ORIGININFO;
-
-	#define CS_ORIGIN_MAX_COLORS    4
-	#define CS_PLASMA_MAX_COLORS 0xFF
-
-	typedef struct
-	{
-		CS_BITMAPCONTEXT	plas;		// destignation plasma fractal
-		CS_FRAME			flop;		// fractal with loaded color info
-
-		DWORD				cNum;		// number of valid colors in cols array
-
-		CS_COLORINFO		cols[ CS_ORIGIN_MAX_COLORS ];
-		COLORREF			pals[ CS_PLASMA_MAX_COLORS ];
-	}
-	CS_PLASMAINFO;
-
-	typedef struct
-	{
-		CS_FRAME			show;
-	}
-	CS_RENDERINFO;
-
-	typedef struct
+    typedef struct
 	{
 		CS_HEADER			head;		// cursor factory information
-
-		CS_ORIGININFO		orgy;		// resource & origin information
-		CS_PLASMAINFO		plsy;		// rendering plasma fractal
-		CS_RENDERINFO		rndy;		// the new factory source
-
-		CS_SYNFRAME			rots[ 0 ];	// rendered frames
+		CS_FRAME    	   *rndy;		// rendered bordered plasma fractal
 	}
 	CS_FACTORY;
 
-	BOOL MakeCS_BitmapInfo( CS_BITMAPINFO *f, int f_iX, int f_iY );
-	BOOL KillCS_BitmapInfo( CS_BITMAPINFO *f );
-	BOOL MakeCS_DCInfo( CS_DCINFO *f, HBITMAP h );
-	BOOL KillCS_DCInfo( CS_DCINFO *f );
-	BOOL MakeCS_BitmapContext( CS_BITMAPCONTEXT *f, int f_iX, int f_iY );
-	BOOL KillCS_BitmapContext( CS_BITMAPCONTEXT *f );
-	BOOL MakeCS_Frame( CS_FRAME *f, int f_iX, int f_iY );
-	BOOL KillCS_Frame( CS_FRAME *f );
-	BOOL MakeCS_Synhro( CS_SYNHRO *f );
-	BOOL KillCS_Synhro( CS_SYNHRO *f );
+    CS_FRAME *MakeCS_Frame( int f_iX, int f_iY );
+    CS_FRAME *LoadCS_Frame( CTRING path );
+    CS_FRAME *PlsmCS_Frame( CS_FRAME *o, CS_HEADER *h );
+    CS_FRAME *RendCS_Frame( CS_FACTORY *o, float fi );
 
-	BOOL MakeCS_FramePosInfo( CS_FRAMEPOSINFO *f );
-	BOOL KillCS_FramePosInfo( CS_FRAMEPOSINFO *f );
+    BOOL SaveCS_Frame( CS_FRAME *f, CTRING path );
+    void TestCS_Frame( CS_FRAME *f, int t_iX, int t_iY );
+    void KillCS_Frame( CS_FRAME *f );
 
-	void TestCS_FramePosInfo( CS_FRAMEPOSINFO *f, int t_iX, int t_iY );
+    CS_FACTORY *MakeCS_Factory( CS_HEADER *h );
+    void KillCS_Factory( CS_FACTORY *f );
 
-	BOOL MakeCS_OriginInfo( CS_ORIGININFO *f, HBITMAP h );
-	BOOL KillCS_OriginInfo( CS_ORIGININFO *f );
-
-	BOOL MakeCS_PlasmaInfo( CS_PLASMAINFO *f, CS_HEADER *h, CS_FRAME *o );
-	BOOL KillCS_PlasmaInfo( CS_PLASMAINFO *f );
-
-	BOOL MakeCS_RenderInfo( CS_RENDERINFO *f, CS_HEADER *h, CS_FRAME *o );
-	BOOL KillCS_RenderInfo( CS_RENDERINFO *f );
-
-	BOOL MakeCS_Factory( CS_FACTORY **f, CS_HEADER *h );
-	BOOL KillCS_Factory( CS_FACTORY **f );
-
-	BOOL RenderCS_Frame( CS_FRAME *f, CS_FACTORY *o, float fi, float rr );
-*/
 #endif // _CURSORSHOP_H_
