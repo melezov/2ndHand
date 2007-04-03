@@ -157,20 +157,19 @@
 
     RatHookProc: frame r_nCode, r_wParam, r_lParam
     ;{
-        invoke    CallNextHookEx, [ gr_hRat ], [ r_nCode ], [ r_wParam ], [ r_lParam ]
+        cmp     D[ gr_hRat ], 0h
+        jz      >.RHP_S
+        ;{
+            invoke    CallNextHookEx, [ gr_hRat ], [ r_nCode ], [ r_wParam ], [ r_lParam ]
+        ;}
 
-        mov       eax, [ r_lParam ]
-        invoke    wsprintf, addr SZ_BUFF, "[ Msg : %08Xh | P1os : ( %04d, %04d ) | Data : %08Xh | Time : %08Xh ]       ", [ r_wParam ], [ eax ], [ eax + 4 ], [ eax + 8 ], [ eax + 10h ]
-        add       esp, 1Ch
+.RHP_S: cmp     D[ gx_hWnd ], 0h
+        jz      >.RHP_X
+        ;{
+            invoke    PostMessage, [ gx_hWnd ], 401h, [ r_wParam ], [ r_lParam ] ; WM_RATHOOK
+        ;}
 
-        invoke    GetDC, 0
-        push      eax
-        invoke    TextOut, eax, 50, 50, addr SZ_BUFF, 54h
-        invoke    ReleaseDC, 0h
-
-        invoke    PostMessage, [ gx_hWnd ], 401h, 0, 0 ; WM_RATHOOK
-
-        xor       eax, eax
+.RHP_X: xor       eax, eax
         ret
      ;}
      endf

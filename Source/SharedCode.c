@@ -1,5 +1,7 @@
 #include "SharedCode.h"
 
+int COUNT = 0;
+
 HWND CreateClassWindow( CTRING s_sCN, CTRING s_sWN, WNDPROC s_pProc, DWORD s_dStyle, DWORD s_dStyleEx )
 {
     WNDCLASSEX s_xWCX;

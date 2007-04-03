@@ -9,11 +9,12 @@
 	#define CS_WHITE		0x00FFFFFF
 	#define CS_ALPHA_MASK	0xFF000000
 
-	#define CS_SHADOW_OPAQ	0xFF0000FF
-	#define	CS_SHADOW_DARK	0x5F005F00
-	#define	CS_SHADOW_LITE	0x3F3F0000
+	#define CS_SHADOW_OPAQ	0xFF000000
+	#define	CS_SHADOW_DARK	0x5F000000
+	#define	CS_SHADOW_LITE	0x3F000000
 
-	#define CS_ASPECT_CORRECTION 1.0f
+	#define CS_ASPECT_CORRECTION    1.0f
+    #define CS_ANGLE_APPROACH       10
 
 	typedef struct
 	{
@@ -24,8 +25,9 @@
 		HDC					hDC;		// hDC in which the bitmap is loaded
 		HGDIOBJ				hGO;		// old GDI object from the hDC
 
-		RECT				rBd;	    // minimum bounding box
-		union							// frame rotation point
+        RECT				rBd;	    // minimum bounding box
+
+        union							// frame rotation point
         {
 			POINT			iC;	        // used for rendered frames
 			POINTFLOAT		fC;	        // used by cursor factory
@@ -51,8 +53,7 @@
 	typedef struct
 	{
 		TCHAR	resId[ MAX_PATH ];		// resource Id
-		DWORD	rotSteps;				// number of frames in the factory
-		SIZE	destSize;				// preferred cursor size
+	    SIZE	destSize;				// preferred cursor size
 		BYTE	aaFactor;				// anti-aliasing factor x by x
 		float	borderWidth;			// border width in destignation pixels
 		float	shadowDist;				// shadow x and y distance in destignation pixels
@@ -61,11 +62,29 @@
 	}
 	CS_HEADER;
 
+    typedef struct tagSyn
+    {
+        CS_FRAME       *work;
+        POINT           sorc;
+        POINT           dest;
+        struct tagSyn  *next;
+    }
+    CS_SYNCHRO;
+
     typedef struct
 	{
 		CS_HEADER			head;		// cursor factory information
 		CS_FRAME    	   *rndy;		// rendered bordered plasma fractal
-	}
+
+        HWND                hwnd;       // cursor window
+
+        BOOL                swdn;       // shutting down flag
+        HANDLE              muta;       // flap flap mutex flap flap
+        HANDLE              sema;       // worker thread idle time semaphore
+        HANDLE              drtv;       // dedicated frameserving thread
+
+        CS_SYNCHRO         *reqs;       // frame requests from the client thread
+    }
 	CS_FACTORY;
 
     CS_FRAME *MakeCS_Frame( int f_iX, int f_iY );
@@ -76,6 +95,9 @@
     BOOL SaveCS_Frame( CS_FRAME *f, CTRING path );
     void TestCS_Frame( CS_FRAME *f, int t_iX, int t_iY );
     void KillCS_Frame( CS_FRAME *f );
+
+    BOOL PostCS_Frame( CS_FACTORY *f, POINT *pNew );
+    BOOL DestroyQueue( CS_FACTORY *f );
 
     CS_FACTORY *MakeCS_Factory( CS_HEADER *h );
     void KillCS_Factory( CS_FACTORY *f );

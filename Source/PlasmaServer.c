@@ -294,7 +294,7 @@ CS_FRAME *PlsmCS_Frame( CS_FRAME *o, CS_HEADER *h )
 
 MakeError:
 
-    MessageBox( 0, TEXT( "PlsmCS_Frame crash!" ), 0, MB_ICONHAND );
+    MessageBox( gm_hWnd, TEXT( "PlsmCS_Frame crash!" ), 0, MB_ICONHAND );
 
     KillCS_Frame( b );
     KillCS_Frame( n );

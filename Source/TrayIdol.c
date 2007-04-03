@@ -57,12 +57,12 @@ BOOL TrayParse( UINT m_uMsg, LPARAM m_lParam )
 			POINT m_cPos;
 			HMENU m_hTM = CreatePopupMenu();
 
-	//		AppendMenu( m_hTM, MF_STRING, WM_CREATE, TEXT( "Open Cursor ..." ) );
-			AppendMenu( m_hTM, MF_SEPARATOR, 0, 0 );
+//	    	AppendMenu( m_hTM, MF_STRING, WM_CREATE, TEXT( "Open Cursor ..." ) );
+//			AppendMenu( m_hTM, MF_SEPARATOR, 0, 0 );
 			AppendMenu( m_hTM, MF_STRING, WM_DESTROY, TEXT( "Exit 2nd Hand" ) );
 
 			GetCursorPos( &m_cPos );
-			SetForegroundWindow( gm_hWnd );
+//			SetForegroundWindow( gm_hWnd );
 			m_iTM = TrackPopupMenuEx( m_hTM, TPM_RETURNCMD | TPM_RIGHTALIGN | TPM_RIGHTBUTTON | TPM_BOTTOMALIGN | TPM_NONOTIFY | TPM_VERTICAL, m_cPos.x, m_cPos.y, gm_hWnd, 0 );
 			DestroyMenu( m_hTM );
 

@@ -3,7 +3,7 @@
 
     #include "SharedCode.h"
 
-	#define WS_MAINGUI ( WS_OVERLAPPEDWINDOW )
+    #define WS_MAINGUI ( WS_OVERLAPPEDWINDOW )
 	#define WX_MAINGUI ( WS_EX_TOOLWINDOW )
 
     BOOL TrayParse( UINT m_uMsg, LPARAM m_lParam );

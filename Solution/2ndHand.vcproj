@@ -67,7 +67,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;$(TargetDir)\RatHook.lib&quot; &quot;C:\masm32\m32lib\masm32.lib&quot;"
+				AdditionalDependencies="&quot;$(TargetDir)\RatHook.lib&quot; &quot;C:\masm32\m32lib\masm32.lib&quot; &quot;C:\masm32\fpulib\fpu.lib&quot;"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -139,7 +139,7 @@
 				WarningLevel="4"
 				WarnAsError="false"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 				CallingConvention="1"
 				CompileAs="1"
 			/>
@@ -158,7 +158,7 @@
 				LinkIncremental="1"
 				GenerateManifest="false"
 				IgnoreDefaultLibraryNames=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -289,6 +289,10 @@
 			</File>
 			<File
 				RelativePath="..\Source\CursorShop.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Source\FanService.c"
 				>
 			</File>
 			<File
