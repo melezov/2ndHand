@@ -1,122 +1,114 @@
 #include "FramRend.h"
 
-IS_FRAME *RoteIS_FRAME( IS_FRAME *o, DWORD aaF, DWORD sS, float stepHX, float stepHY  )
+typedef struct
+{
+    DWORD width;
+    int *lutQ, *lutW;
+    int mid;
+    DWORD delta;
+}
+FR_INFO;
+
+FR_INFO *MakeFR_INFO( DWORD aaF, int oX, int oY, float fi, float fx, float fy, float sign );
+
+IS_FRAME *RoteIS_FRAME( IS_FRAME *o, DWORD aaF, DWORD sS, float fi )
 {
     DWORD dErr = ERROR_FRAMREND( 0x00 );
 
-    const DWORD oX = o->_x;
-    const DWORD oY = o->_y;
+    FR_INFO *rX, *rY = 0;
 
-    const float stepVX = - stepHY / IS_ASPECT_CORRECTION;
-    const float stepVY =   stepHX / IS_ASPECT_CORRECTION;
+    CHECK_ERROR( rX = MakeFR_INFO( aaF, o->_x, - (int) o->_y, fi, o->_fx, - o->_fy, 1 ) );
+    CHECK_ERROR( rY = MakeFR_INFO( aaF, o->_y, o->_x, fi, o->_fy, o->_fx, -1 ) );
 
-    const float scaleV = stepVX / stepVY;
-    const float scaleH = stepHY / stepHX;
-
-    const float aspectX = oX / ( oX * ( stepHX - stepHY * scaleV ) );
-    const float aspectY = oY / ( oY * ( stepVY - stepVX * scaleH ) );
-
-    const float splitQ = scaleV * aspectX;
-    const float splitW = scaleH * aspectY;
-
-    const float x1 = oX * stepHX;
-    const float y1 = oX * stepHY;
-    const float x2 = oY * stepVX;
-    const float y2 = oY * stepVY;
-
-    const float minX = min( min( 0, x1 ), min( x2, x1 + x2 ) );
-    const float minY = min( min( 0, y1 ), min( y2, y1 + y2 ) );
-    const float maxX = max( max( 0, x1 ), max( x2, x1 + x2 ) );
-    const float maxY = max( max( 0, y1 ), max( y2, y1 + y2 ) );
-
-    DWORD wX = (DWORD) ( maxX - minX + 1 );
-    DWORD wY = (DWORD) ( maxY - minY + 1 );
-
-    const DWORD sX = wX + aaF + sS;
-    const DWORD sY = wY + aaF + sS;
-
-    const float mX = o->_fx * x1 / oX + o->_fy * x2 / oY - minX;
-    const float mY = o->_fx * y1 / oX + o->_fy * y2 / oY - minY;
-
-    const int dX = aaF - (int)(DWORD) mX % aaF;
-    const int dY = aaF - (int)(DWORD) mY % aaF;
-
-    const DWORD sD = ( 1 + sX + dX ) * sS;
-
-    IS_FRAME *f;
-
-    int x, y, *lutXQ = 0, *lutXW, *lutYQ, *lutYW;
-
-    CHECK_ERROR( f = MakeIS_FRAME( sX + dX, sY + dY ) );
-    CHECK_ERROR( lutXQ = (int *) MemAlloc( ( wX + wY ) * 2 ) );
-
-    lutXW = lutXQ + wX;
-    lutYQ = lutXW + wX;
-    lutYW = lutYQ + wY;
-
-    for ( x = -- wX; x >= 0; x -- )
     {
-        lutXQ[ x ] = (int)(DWORD) ( ( x + minX ) * aspectX * 256 );
-        lutXW[ x ] = (int)(DWORD) ( ( x + minX ) * splitW  * 256 );
-    }
+        const DWORD oX = o->_x;
+        const DWORD oY = o->_y;
 
-    for ( y = -- wY; y >= 0; y -- )
-    {
-        lutYQ[ y ] = (int)(DWORD) ( ( y + minY ) * aspectY * 256 );
-        lutYW[ y ] = (int)(DWORD) ( ( y + minY ) * splitQ  * 256 );
-    }
+        DWORD wX = rX->width;
+        DWORD wY = rY->width;
 
-    for ( y = wY; y >= 0; y -- )
-    {
-        DWORD *dPx = &_PX( f, dX + wX, y + dY );
+        const int dX = rX->delta;
+        const int dY = rY->delta;
 
-        const int curYW = lutYW[ y ];
-        const int curYQ = lutYQ[ y ];
+        const DWORD zX = wX + aaF + sS + dX;
+        const DWORD zY = wY + aaF + sS + dY;
 
-        for ( x = wX; x >= 0; x --, dPx -- )
+        const DWORD sD = ( 1 + zX ) * sS;
+
+        IS_FRAME *f = 0;
+
+        int x, y;
+
+        int rl = wX;
+        int rt = 0;
+        int rr = 0;
+        int rb = -1;
+
+        CHECK_ERROR( f = MakeIS_FRAME( zX, zY ) );
+
+        for ( y = wY - 1; y >= 0; y -- )
         {
-            const int fX = (int) ( lutXQ[ x ] - curYW ) >> 8;
-            const int fY = (int) ( curYQ - lutXW[ x ] ) >> 8;
+            const int curYQ = rY->lutQ[ y ];
+            const int curYW = rY->lutW[ y ];
 
-	        COLORREF col;
+            int sX = -1, eX;
 
-            if ( ( fX < 0 ) || ( fX >= (int) oX ) ) continue;
-	        if ( ( fY < 0 ) || ( fY >= (int) oY ) ) continue;
+            DWORD *dPx = &_PX( f, dX + sX, y + dY ), col;
 
-	        if ( !( col = _PX( o, (DWORD) fX, (DWORD) fY ) ) ) continue;
+            for ( x = 0; x < (int) wX; x ++, dPx ++ )
+            {
+                const int fX = (int) ( rX->lutQ[ x ] - curYW ) >> 8;
+                const int fY = (int) ( curYQ - rX->lutW[ x ] ) >> 8;
 
-            *dPx = col;
+                if ( ( fX < 0 ) || ( fY < 0 ) || ( fX >= (int) oX ) || ( fY >= (int) oY ) )
+                {
+                    if ( sX != -1 ) break;
+                }
+                else if ( *dPx = col = _PX( o, (DWORD) fX, (DWORD) fY ) )
+                {
+                    if ( sX == -1 ) sX = x;
+                    eX = x;
 
-            if ( ! dPx[ sD ] )
-	        {
-                dPx[ sD ] = ( col == IS_SHADOW_OPAQ ) ? IS_SHADOW_LITE : IS_SHADOW_DARK;
+                    if ( col && !dPx[ sD ] )
+	                {
+                        dPx[ sD ] = ( col == IS_SHADOW_OPAQ ) ? IS_SHADOW_LITE : IS_SHADOW_DARK;
+                    }
+                }
             }
 
-            TestIS_FRAME( f, x + dX, y + dY );
+            if ( sX != -1 )
+            {
+                if ( rl > sX ) rl = sX;
+                if ( rr < eX ) rr = eX;
+
+                rt = y;
+                if ( rb == -1 ) rb = y;
+            }
         }
+
+        TestIS_FRAME( f, rl + dX, rt + dY );
+        TestIS_FRAME( f, rr + dX + sS, rb + dY + sS );
+
+        f->_ix = rX->mid;
+        f->_iy = rY->mid;
+
+        dErr = ERROR_SUCCESS;
+
+    CatchError:
+
+        MemFree( rX );
+        MemFree( rY );
+
+        if ( dErr )
+        {
+            KillIS_FRAME( f );
+            f = 0;
+
+            MsgErr( dErr, MB_ICONINFORMATION );
+        }
+
+        return f;
     }
-
-    f->_rr += sS;
-    f->_rb += sS;
-
-    f->_ix = ( ( (int)(DWORD) mX ) / aaF + 1 ) * aaF;
-    f->_iy = ( ( (int)(DWORD) mY ) / aaF + 1 ) * aaF;
-
-    dErr = ERROR_SUCCESS;
-
-CatchError:
-
-    MemFree( lutXQ );
-
-    if ( dErr )
-    {
-        KillIS_FRAME( f );
-        f = 0;
-
-        MsgErr( dErr, MB_ICONINFORMATION );
-    }
-
-    return f;
 }
 
 void ShrinkRasterMMX( DWORD aaF, DWORD tX, DWORD *dPx, DWORD wXm, DWORD wYm, DWORD *tPx );
@@ -164,23 +156,14 @@ IS_FRAME *RendIS_FRAME( IS_FACTORY *f, float fi )
     DWORD dErr = ERROR_FRAMREND( 0x20 );
 	IS_FRAME *n = 0, *o;
 
-    float stepHX, stepHY;
-
     const DWORD aaF = f->head.aaFactor;
     const DWORD sS = MulHalfAdd( aaF, f->head.shadowDist );
 
-    __asm
-    {
-        finit
-        fld     DWORD PTR [ fi ]
-        fsincos
-        fstp    DWORD PTR [ stepHX ]
-        fstp    DWORD PTR [ stepHY ]
-        fwait
-    }
+    CHECK_ERROR( o = RoteIS_FRAME( f->rndy, aaF, sS, fi ) );
 
-    CHECK_ERROR( o = RoteIS_FRAME( f->rndy, aaF, sS, stepHX, stepHY ) );
-    CHECK_ERROR( n = SrnkIS_FRAME( o, f->head.aaFactor ) );
+    if ( aaF == 1 ) return o;
+
+    CHECK_ERROR( n = SrnkIS_FRAME( o, aaF ) );
 
     dErr = ERROR_SUCCESS;
 

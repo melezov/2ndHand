@@ -10,9 +10,170 @@
                0501A72Fh, 06000000h, 0600CA46h, 0601A3D7h, 06008768h, \
                0700E38Fh, 0700C1E5h, 0701A72Fh, 070091A3h, 08000000h
 
+    cw      dw 0F7Fh
+    mf      dw 100h
+
 ; #############################################################################################################################
 
     CODE
+
+; #############################################################################################################################
+
+    align   4
+
+    @MinMaxFloatWinner@4: ; void ( ecx : DWORD count )
+    ;{
+
+.MF_L:  fxch        st2
+
+        fcom
+        fstsw       ax
+        test        ah, 41h
+        jnz          >.MN_S
+        fxch
+
+.MN_S:  fcom        st2
+        fstsw       ax
+        test        ah, 41h
+        jz          >.MX_S
+        fxch        st2
+
+.MX_S:  fstp        st
+        fxch
+        fwait
+
+        loop    <.MF_L
+
+        ret
+    ;}
+
+; #############################################################################################################################
+
+    FR_INFO STRUCT
+    ;{
+        width   dd
+        lutQ    dd
+        lutW    dd
+        mid     dd
+        delta   dd
+    ;}
+    ENDS
+
+    align   4
+
+    @MakeFR_INFO@28: FRAME oY, fi, fx, fy, sign; FR_INFO * ( DWORD aaF, int oX, int oY, float fi, float fx, float fy, float sign );
+    ;{
+        USES        ebx, esi
+        LOCALS      aaF, oX
+
+        finit
+        fldcw       W[ cw ]
+
+        mov         D[ aaF ], ecx
+        mov         D[ oX ], edx
+
+        fld         D[ fi ]
+        fsincos
+
+        fld         st
+        fimul       D[ oX ]
+        fld         st2
+        fimul       D[ oY ]
+        fld         st
+        fadd        st2
+        fldz
+        fldz
+
+        push        3
+        pop         ecx
+        call        @MinMaxFloatWinner@4
+
+        fld         st1
+        fsub        st, st1
+        push        eax
+        fistp       D[ esp ]
+        fwait
+        pop         ebx
+        inc         ebx
+
+        lea         ecx, [ ebx + ebx + sizeof( FR_INFO ) / 4 ]
+        call        @MemAlloc@4
+
+        or          eax, eax
+        jz          >.FR_X
+
+        xchg        eax, ebx
+
+        mov         [ ebx + FR_INFO.width ], eax
+        lea         ecx, [ ebx + sizeof( FR_INFO ) ]
+        mov         [ ebx + FR_INFO.lutQ ], ecx
+        lea         ecx, [ ecx + eax * 4 ]
+        mov         [ ebx + FR_INFO.lutW ], ecx
+
+        xchg        eax, esi
+
+        fld         st2
+        fmul        D[ fx ]
+        fld         st4
+        fmul        D[ fy ]
+        fadd
+        fsub        st1
+        push        eax
+        fistp       D[ esp ]
+
+        xor         edx, edx
+        mov         ecx, [ aaF ]
+        fwait
+        pop         eax
+        div         ecx
+        inc         eax
+
+        sub         edx, ecx
+        neg         edx
+        mov         [ ebx + FR_INFO.delta ], edx
+
+        mul         ecx
+        mov         [ ebx + FR_INFO.mid ], eax
+
+        fld         st3
+        fdiv        st3
+        fmul        D[ sign ]
+
+        fld         st4
+        fmul        st1
+        fmul        D[ sign ]
+        fadd        st4
+        fidivr      W[ mf ]
+
+        fld         st2
+        fmul        st1
+
+        ; st(0): initial step
+        ; st(1): aspect
+        ; st(2): scale
+        ; st(3): min
+        ; st(4): max
+        ; st(5): hX
+        ; st(6): hY
+
+        xor         ecx, ecx
+.FR_L:  lea         eax, [ ebx + ecx * 4 + sizeof( FR_INFO ) ]
+        fist        D[ eax ]
+        fld         st
+        fmul        st3
+        fistp       D[ eax + esi * 4 ]
+        fadd        st1
+
+        inc         ecx
+        cmp         ecx, esi
+        jl          <.FR_L
+
+        mov         eax, ebx
+
+.FR_X:  finit
+        ret
+    ;}
+    ENDF
 
 ; #############################################################################################################################
 

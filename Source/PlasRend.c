@@ -21,6 +21,7 @@ DWORD AdjustIS_PLASMA( IS_FRAME *f, DWORD *seed, DWORD grad, DWORD xa, DWORD ya,
 void DivideIS_PLASMA( IS_FRAME *f, DWORD *seed, DWORD grad, DWORD x1, DWORD y1, DWORD x2, DWORD y2 )
 {
     DWORD x0, y0, *cur;
+    DWORD nseed;
 
     if ( ( x2 - x1 < 2 ) && ( y2 - y1 < 2 ) ) return;
 
@@ -35,12 +36,14 @@ void DivideIS_PLASMA( IS_FRAME *f, DWORD *seed, DWORD grad, DWORD x1, DWORD y1, 
                  AdjustIS_PLASMA( f, seed, grad, x1, y1, x1, y0, x1, y2 ) + 2 ) >> 2;
     }
 
+    nseed = *seed + *cur;
+
     grad >>= 1;
 
-    DivideIS_PLASMA( f, seed, grad, x1, y1, x0, y0 );
-    DivideIS_PLASMA( f, seed, grad, x0, y1, x2, y0 );
-    DivideIS_PLASMA( f, seed, grad, x0, y0, x2, y2 );
-    DivideIS_PLASMA( f, seed, grad, x1, y0, x0, y2 );
+    DivideIS_PLASMA( f, &nseed, grad, x1, y1, x0, y0 );
+    DivideIS_PLASMA( f, &nseed, grad, x0, y1, x2, y0 );
+    DivideIS_PLASMA( f, &nseed, grad, x0, y0, x2, y2 );
+    DivideIS_PLASMA( f, &nseed, grad, x1, y0, x0, y2 );
 }
 
 void InitIS_PLASMA( IS_FRAME *f, DWORD seed, float plasmaChaos )

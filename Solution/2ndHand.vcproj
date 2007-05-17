@@ -81,7 +81,7 @@
 				EntryPointSymbol="SharCode"
 				BaseAddress="0x00420000"
 				TargetMachine="1"
-				FixedBaseAddress="0"
+				FixedBaseAddress="2"
 			/>
 			<Tool
 				Name="VCALinkTool"
