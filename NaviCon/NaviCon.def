@@ -1,3 +1,5 @@
 LIBRARY	"NaviCon"
 
-EXPORTS
+EXPORTS		ooo				   @1 NONAME
+EXPORTS		ProcessNAVIMessage @2 NONAME
+EXPORTS		SendMouse		   @3 NONAME

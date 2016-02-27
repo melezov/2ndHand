@@ -69,7 +69,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="msvcrtd.lib"
 				LinkIncremental="2"
-				GenerateManifest="false"
+				GenerateManifest="true"
 				IgnoreAllDefaultLibraries="true"
 				ModuleDefinitionFile="CursorFactory.def"
 				GenerateDebugInformation="true"
@@ -81,7 +81,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
-				EmbedManifest="false"
+				EmbedManifest="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"

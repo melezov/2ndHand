@@ -4,6 +4,7 @@ HINSTANCE w_hInst;
 HWND w_hWnd;
 
 CF_WS *aa;
+int  n_iWhatAmI;
 
 LRESULT CALLBACK m_pProc( HWND m_hWnd, UINT m_uMsg, WPARAM m_wParam, LPARAM m_lParam )
 {
@@ -14,7 +15,7 @@ LRESULT CALLBACK m_pProc( HWND m_hWnd, UINT m_uMsg, WPARAM m_wParam, LPARAM m_lP
 		SetWindowPos( m_hWnd, 0, 100, 100, 1200, 850, SWP_SHOWWINDOW );
 	}
 
-	else if ( m_uMsg == WM_PAINT )
+/*	else if ( m_uMsg == WM_PAINT )
 	{
 		PAINTSTRUCT t_xPS;
 
@@ -47,7 +48,7 @@ LRESULT CALLBACK m_pProc( HWND m_hWnd, UINT m_uMsg, WPARAM m_wParam, LPARAM m_lP
 			}
 		}
 		EndPaint( m_hWnd, &t_xPS );
-	}
+	}*/
 
 	else if ( m_uMsg == WM_RATMESSAGE )
 	{
@@ -56,10 +57,42 @@ LRESULT CALLBACK m_pProc( HWND m_hWnd, UINT m_uMsg, WPARAM m_wParam, LPARAM m_lP
 
 		InvalidateRect( w_hWnd, 0, 0 );
 
-		wsprintf( buffy, "w : %08X, l : %08X", m_wParam, m_lParam );
-		TextOut( xDC, 100, 100, buffy, lstrlen( buffy ) );
+        if( n_iWhatAmI )
+        {
+            wsprintf( buffy, "server - w : %08X, l : %08X", m_wParam, m_lParam );
+            TextOut( xDC, 100, 50, buffy, lstrlen( buffy ) );
+        }
+        else
+        {
+            wsprintf( buffy, "client - w : %08X, l : %08X", m_wParam, m_lParam );
+            TextOut( xDC, 100, 100, buffy, lstrlen( buffy ) );
+            SendMouse( HIWORD(m_lParam), LOWORD(m_lParam) );
+        }
+
 		ReleaseDC( 0, xDC );
 	}
+
+    else if ( m_uMsg == WM_NAVIMESSAGE_MOUSE )
+	{
+		HDC xDC = GetDC( 0 );
+		char buffy[ 1024 ];
+
+		InvalidateRect( w_hWnd, 0, 0 );
+
+        if( n_iWhatAmI )
+        {
+            wsprintf( buffy, "pozicija - x : %08d, y : %08d", m_wParam, m_lParam );
+            TextOut( xDC, 100, 150, buffy, lstrlen( buffy ) );
+        }
+
+		ReleaseDC( 0, xDC );
+	}
+
+
+    else if ( m_uMsg == WM_NAVISOCKETMESSAGE )
+    {
+        ProcessNAVIMessage( (SOCKET) m_wParam, m_lParam );
+    }
 
 	else if ( m_uMsg == WM_CLOSE );
 
@@ -73,7 +106,9 @@ LRESULT CALLBACK m_pProc( HWND m_hWnd, UINT m_uMsg, WPARAM m_wParam, LPARAM m_lP
 
 int WinMainCRTStartup()
 {
-	aa = LoadCF_WS( 0x40 );
+//	aa = LoadCF_WS( 0x40 );
+    char *tst;
+    int i=0;
 
 	w_hInst = GetModuleHandle( 0 );
 	{
@@ -83,6 +118,20 @@ int WinMainCRTStartup()
 	}
 
 	RatInit( w_hWnd );
+
+    tst = GetCommandLine();
+    while( tst[i++] );
+
+    if( tst[i-2] == 'c' )
+    {
+        n_iWhatAmI = 0;
+        ooo( 21, "192.168.52.158", w_hWnd );
+    }
+    else
+    {
+        n_iWhatAmI = 1;
+        ooo( 21, NULL, w_hWnd );
+    }
 
 	return MessagePump();
 }

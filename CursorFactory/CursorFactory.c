@@ -301,8 +301,8 @@ CF_WS *DeriveCF_WS( CF_WS *n, float r_fAngle )
 
 	KillCF_WS( r );
 
-	q->pRot.x = ( r_pPlg[ 0 ].x - r_rBounds[ 2 ].left + (int) ( n->pRot.x * r_fXC ) + (int) ( n->pRot.y * r_fYC ) ) / CF_ENLARGE_FACTOR;
-	q->pRot.y = ( r_pPlg[ 0 ].y - r_rBounds[ 2 ].top  + (int) ( n->pRot.x * r_fXS ) + (int) ( n->pRot.y * r_fYS ) ) / CF_ENLARGE_FACTOR;
+	q->pRot.x = (float) ( r_pPlg[ 0 ].x - r_rBounds[ 2 ].left + (int) ( n->pRot.x * r_fXC ) + (int) ( n->pRot.y * r_fYC ) ) / CF_ENLARGE_FACTOR;
+	q->pRot.y = (float) ( r_pPlg[ 0 ].y - r_rBounds[ 2 ].top  + (int) ( n->pRot.x * r_fXS ) + (int) ( n->pRot.y * r_fYS ) ) / CF_ENLARGE_FACTOR;
 
 	return q;
 }
