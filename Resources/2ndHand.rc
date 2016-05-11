@@ -1,0 +1,7 @@
+0x10 ICON "Icons\\0x10 - Pointer.ico"
+0x20 ICON "Icons\\0x20 - Picker.ico"
+0x30 ICON "Icons\\0x30 - Denied.ico"
+
+0x11 BITMAP "Bitmaps\\0x11 - Pointer.bmp"
+0x21 BITMAP "Bitmaps\\0x21 - Picker.bmp"
+0x31 BITMAP "Bitmaps\\0x31 - Denied.bmp"

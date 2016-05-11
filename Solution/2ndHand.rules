@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VisualStudioToolFile
+	Name="2ndHand Rules"
+	Version="8,00"
+	>
+	<Rules>
+		<CustomBuildRule
+			Name="GoAsm Compiler Build Rule"
+			DisplayName="GoAsm Compiler"
+			CommandLine="..\Tools\GoAsm /ni /fo $(TargetDir)$(InputFileName).obj $(InputPath)"
+			Outputs="$(TargetDir)$(InputFileName).obj"
+			FileExtensions="*.a"
+			ExecutionDescription="$(InputFileName)"
+			ShowOnlyRuleProperties="false"
+			>
+			<Properties>
+			</Properties>
+		</CustomBuildRule>
+	</Rules>
+</VisualStudioToolFile>

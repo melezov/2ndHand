@@ -1,0 +1,68 @@
+; #############################################################################################################################
+
+    #include "..\Source\SharXtra.h"
+
+; #############################################################################################################################
+
+    CODE
+
+; #############################################################################################################################
+
+    align   4
+
+    @BlotIS_PLASMA@8: FRAME
+    ;{
+        USES    ebx, esi, edi
+        LOCALS  rad, raS, dia, col
+
+        mov     [ rad ], ecx
+        push    edx
+
+        lea     eax, [ ecx + 1 ]
+        mul     ecx
+        mov     [ raS ], eax
+
+        add     ecx, ecx
+        mov     [ dia ], ecx
+
+        inc     ecx
+        mov     edx, ecx
+        call    @MakeIS_FRAME@8
+        or      eax, eax
+
+        pop     ecx
+        push    eax
+
+        jz      >.B_EX
+
+        mov     ebx, [ eax + 2Ch ] ; dPx
+
+        mov     esi, [ dia ]
+.B_LY:  mov     edi, [ dia ]
+.B_LX:  mov     eax, edi
+        sub     eax, [ rad ]
+        imul    eax
+        push    eax
+
+        mov     eax, esi
+        sub     eax, [ rad ]
+        imul    eax
+        pop     edx
+        add     eax, edx
+
+        cmp     eax, [ raS ]
+        jge     >.B_SK
+        mov     [ ebx ], ecx
+.B_SK:  add     ebx, 4
+
+        dec     edi
+        jns     <.B_LX
+        dec     esi
+        jns     <.B_LY
+
+.B_EX:  pop     eax
+        ret
+    ;}
+    ENDF
+
+; #############################################################################################################################

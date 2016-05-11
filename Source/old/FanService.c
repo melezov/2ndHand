@@ -1,5 +1,82 @@
 #include "CursorShop.h"
 
+DWORD sema = 1;
+DWORD tesy = 0x0;
+DWORD hehe = 0;
+
+HANDLE mutex;
+
+DWORD WINAPI WorkerThread()
+{
+    int i;
+
+    for ( i = 0; i < 0x111111; i ++ )
+    {
+        __asm
+        {
+           lea eax, [ tesy ]
+           mov  edx, 1
+
+           lock xadd DWORD PTR [ eax ], edx
+        }
+
+//        WaitForSingleObject( mutex, INFINITE );
+/*        __asm
+        {
+            xor     eax, eax     // ; set AX to zero
+        L1:
+            lock    xchg eax, [ sema ]  //  ; atomic test and set. sema = 0, ax = sema
+            or      eax, eax
+            jz      L1
+
+            mov eax, [ tesy ]
+            inc eax
+            mov [ tesy ], eax
+
+            xor     eax, eax
+            inc     eax
+            lock    xchg eax, [ sema ]
+        }
+//        ReleaseMutex( mutex );
+
+/*
+            xor     eax, eax     // ; set AX to zero
+            inc     eax
+        L1:
+            lock  xadd eax xchg    eax, [ sema ]  //  ; atomic test and set. sema = 0, ax = sema
+            or      eax, eax      // ; is the value we obtained from sema 0?
+            jz      L1            // ;  yes, wait for someone to release semaphore
+            dec     eax            // ; no, we got the semaphore.
+            lock xchg    eax, [ sema ]    //; decrease by one and store
+
+            mov eax, [ tesy ]
+            inc eax
+            mov [ tesy ], eax
+
+            lock xchg    eax, [ sema ] //    ; sema value may have been changed by other threads
+            inc          eax           //   ; bump to notify we have released it
+            lock xchg    eax, sema      //; atomic store
+        }
+
+
+*/
+
+    }
+
+    hehe ++;
+
+    return 0;
+}
+
+DWORD MainGxUI()
+{
+    mutex = CreateMutex( 0, 0, 0 );
+
+    CreateThread( 0, 0, (LPTHREAD_START_ROUTINE) WorkerThread, 0, 0, 0 );
+    WorkerThread();
+
+    while ( hehe < 2 ) ;
+    return 0;
 
 
 float abz( float x )

@@ -1,0 +1,106 @@
+; #############################################################################################################################
+
+    #include "..\Source\SharXtra.h"
+
+; #############################################################################################################################
+
+    DATA
+
+    gi_dSim dd 02000000h, 0300E38Fh, 04000000h, 0401A3D7h, 0500E38Fh, \
+               0501A72Fh, 06000000h, 0600CA46h, 0601A3D7h, 06008768h, \
+               0700E38Fh, 0700C1E5h, 0701A72Fh, 070091A3h, 08000000h
+
+; #############################################################################################################################
+
+    CODE
+
+; #############################################################################################################################
+
+    align   4
+
+    @ShrinkRasterMMX@24: FRAME dPx, wXm, wYm, tPx
+    ;{
+        USES        ebx, esi, edi
+        LOCALS      mTa, aaFs4, aaFm1
+
+        mov         esi, [ tPx ]
+        mov         edi, [ dPx ]
+
+        lea         eax, [ ecx - 1 ]
+        shl         ecx, 2
+        mov         [ aaFm1 ], eax
+        mov         [ aaFs4 ], ecx
+
+        lea         eax, [ edx - 1 ]
+        shl         edx, 2
+        sub         edx, ecx
+        sub         eax, [ wXm ]
+        mov         [ dPx ], edx
+        mul         ecx
+        mov         [ tPx ], eax
+
+        movd        mm0, [ gi_dSim - 8h + ecx ]
+        movq        mm1, mm0
+        movq        mm2, mm0
+        pxor        mm7, mm7
+        psrlq       mm0, 10h
+        punpcklbw   mm0, mm7
+        punpcklwd   mm0, mm0
+        punpcklwd   mm0, mm0
+
+        punpcklwd   mm1, mm1
+        punpcklwd   mm1, mm1
+        movd        [ mTa ], mm1
+
+        psrlq       mm2, 18h
+
+;       mm0 - increase option
+;       mm1 - multiply factor
+;       mm2 - shift count
+;       mm7 - zeroes
+
+.AB_Y:  mov         ebx, [ wXm ]
+.AB_X:  mov         ecx, edi
+
+        pxor        mm3, mm3
+        mov         eax, [ aaFm1 ]
+.SR_Y:  mov         edx, [ aaFm1 ]
+.SR_X:  movd        mm4, [ ecx ]
+        punpcklbw   mm4, mm7
+        paddw       mm3, mm4
+
+        add         ecx, 4
+        sub         edx, 1
+        jns         <.SR_X
+
+        add         ecx, [ dPx ]
+        sub         eax, 1
+        jns         <.SR_Y
+
+        paddw       mm3, mm0
+        cmp         D[ mTa ], 0h
+        jz          >.SR_M
+
+        pmulhuw     mm3, mm1
+.SR_M:  psrlw       mm3, mm2
+        packuswb    mm3, mm7
+
+        movd        [ esi ], mm3
+
+        sub         edi, [ aaFs4 ]
+        sub         esi, 4
+        sub         ebx, 1
+        jns         <.AB_X
+
+        sub         edi, [ tPx ]
+        sub         D[ wYm ], 1
+        jns         <.AB_Y
+
+        emms
+        ret
+    ;}
+    ENDF
+
+KOKO:
+
+; #############################################################################################################################
